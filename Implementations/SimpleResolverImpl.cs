@@ -35,7 +35,7 @@ public class SimpleResolverImpl : IResolver
         string hash = _hashProvider.GetHash(cells);
 
         // TODO: l'ordine conta?
-        while (!cells.IsResolved())
+        for (var ii=0; !cells.IsResolved(); ii++)
         {
             ExecIteration(cells, constraints);
 
@@ -47,6 +47,7 @@ public class SimpleResolverImpl : IResolver
             }
 
             hash = newHash;
+            _listener.OnEndIteration(ii);
         }
         
         return false;
@@ -57,24 +58,41 @@ public class SimpleResolverImpl : IResolver
     {
         foreach (var help in helpCells)
         {
-            var cell = cells.Find(help.Cell);
+            var cell = cells.Find(help);
             cell.Resolve(help.Value);
             _listener.OnCellResolved(cell);
         }
     }
 
-    private void ExecIteration(CellStatus[] cells,
-                               Constraint[] constraints)
+    private static void ExecIteration(CellStatus[] cells,
+                                      Constraint[] constraints)
     {
-        foreach (var cell in cells)
+        foreach (var cell in cells.ExcludeResolved())
         {
-            ExecOnCell(cell, constraints);
+            RemoveResolved(cell, cells);
+            // TODO: ApplyConstrainsts(cell, cells, constraints);
         }
     }
 
-    private void ExecOnCell(CellStatus cell,
-                            Constraint[] constraints)
+    private static void RemoveResolved(CellStatus cell,
+                                       CellStatus[] cells)
     {
         // TODO
+        // 1. rimuovo i numeri già usati sulla stessa riga della matrice
+        // 2. rimuovo i numeri già usati sulla stessa colonna della matrice
+
+        // 3. rimuovo i numeri già usati all'interno del gruppo
+        var resolvedValuesOnSameGroup = cells.OnGroupOf(cell)
+            .Exclude(cell)
+            .OnlyResolved()
+            .Select(c => c.Value);
+        cell.RemovePossibilities(resolvedValuesOnSameGroup);
+    }
+    
+    private static void ApplyConstrainsts(CellStatus cell,
+                                          CellStatus[] cells,
+                                          Constraint[] constraints)
+    { 
+        throw new NotImplementedException();
     }
 }

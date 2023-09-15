@@ -10,6 +10,11 @@ public class ConsoleEventListener : IEventListener
         Console.WriteLine($"Resolved {cell.ToHumanString()}");
     }
 
+    public void OnEndIteration(int iteration)
+    {
+        Console.WriteLine($"End iteration #{iteration}");
+    }
+
     public void OnNothingChanged()
     {
         Console.WriteLine("Noting changed from previous iteration");

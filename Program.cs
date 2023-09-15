@@ -40,7 +40,7 @@ Console.WriteLine("Resolving...");
 var resolved = resolver.Resolve(cells, constraints, helpCells);
 
 Console.WriteLine($"...matrix is {(resolved ? "resolved!" : "not resolved!")}");
-
+Console.WriteLine(cells.ToHumanString());
 
 /********************************/
 

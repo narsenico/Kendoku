@@ -50,12 +50,11 @@ public static partial class SettingsParser
         // g:r:c,v
         var match = HelpCellRegex().Match(text);
         var value = match.Groups["Value"].Value.ToInt() ?? throw new ArgumentException($"{nameof(HelpCell)} argument not valid");
-        var cell = new Cell(
+        return new HelpCell(
             GroupIndex: match.Groups["GroupIndex"].Value.ToInt()!.Value,
             Row: match.Groups["Row"].Value.ToInt()!.Value,
-            Col: match.Groups["Col"].Value.ToInt()!.Value);
-
-        return new(cell, value);
+            Col: match.Groups["Col"].Value.ToInt()!.Value,
+            value);
     }
 
     [GeneratedRegex("^(((?<GroupIndex>\\d+):(?<Row>\\d+):(?<Col>\\d+),)+)(?<Value>\\d+)$")]

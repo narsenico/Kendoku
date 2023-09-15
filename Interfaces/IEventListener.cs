@@ -7,4 +7,6 @@ public interface IEventListener
     public void OnCellResolved(CellStatus cell);
 
     public void OnNothingChanged();
+
+    public void OnEndIteration(int iteration);
 }
