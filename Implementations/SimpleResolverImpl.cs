@@ -1,3 +1,4 @@
+using kendoku.Implementations;
 using kendoku.Interfaces;
 
 using Kendoku.Interfaces;
@@ -20,7 +21,7 @@ public class SimpleResolverImpl : IResolver
 
     public bool Resolve(CellStatus[] cells,
                         Constraint[] constraints,
-                        HelpCell[] helpCells)
+                        Helper[] helpers)
     {
         // 1. applico gli aiuti
         // 2. inizio iterazione
@@ -29,7 +30,7 @@ public class SimpleResolverImpl : IResolver
         //  - se non ci sono state modifiche nello stato della matrice esco (altrimenti loop infinito)
         //  - reitero fino a che tutte le celle non sono risolte
 
-        ApplyHelps(cells, helpCells);
+        ApplyHelpers(cells, helpers);
 
         // se dopo ogni iterazione l'hash non cambia significa che non ci sono stati cambiamenti nelle celle
         string hash = _hashProvider.GetHash(cells);
@@ -53,10 +54,10 @@ public class SimpleResolverImpl : IResolver
         return false;
     }
 
-    private void ApplyHelps(CellStatus[] cells,
-                            HelpCell[] helpCells)
+    private void ApplyHelpers(CellStatus[] cells,
+                            Helper[] helpers)
     {
-        foreach (var help in helpCells)
+        foreach (var help in helpers)
         {
             var cell = cells.Find(help);
             cell.Resolve(help.Value);

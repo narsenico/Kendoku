@@ -10,14 +10,14 @@ public static class Extensions
         return $"[{cell.MatrixRow}/{cell.MatrixCol}]{cell.GroupIndex}/{cell.Row}/{cell.Col}";
     }
     
-    public static string ToHumanString(this HelpCell cell)
+    public static string ToHumanString(this Helper helper)
     {
-        return $"Help {{ cell={cell.cell.ToHumanString()} value={cell.Value} }}";
+        return $"Helper {{ cell={helper.cell.ToHumanString()} value={helper.Value} }}";
     }
 
-    public static string ToHumanString(this IEnumerable<HelpCell> cells)
+    public static string ToHumanString(this IEnumerable<Helper> helpers)
     {
-        return string.Join('\n', cells.Select(c => c.ToHumanString()));
+        return string.Join('\n', helpers.Select(c => c.ToHumanString()));
     }
 
     public static string ToHumanString(this CellStatus cell)

@@ -1,36 +1,14 @@
-namespace Kendoku.Models;
+using Kendoku.Models;
 
-public static class CellStatusExtensions
+namespace kendoku.Implementations;
+
+public static class Extensions
 {
     public static CellStatus Find(this IEnumerable<CellStatus> cells,
-                                  Cell cell)
+                                  Helper helper)
     {
-        return cells.First(c => c.Cell == cell);
+        return cells.First(c => c.Cell == helper.cell);
     }
-
-    public static CellStatus Find(this IEnumerable<CellStatus> cells,
-                                  HelpCell cell)
-    {
-        return cells.First(c => c.Cell == cell.cell);
-    }
-
-    public static CellStatus Find(this IEnumerable<CellStatus> cells,
-                                int group,
-                                int row,
-                                int col)
-    {
-        return cells.First(c => c.Cell.GroupIndex == group
-                                && c.Cell.Row == row
-                                && c.Cell.Col == col);
-    }
-
-    // public static CellStatus FindByIndex(this IEnumerable<CellStatus> cells,
-    //                                      int group,
-    //                                      int cellIndex)
-    // {
-    //     return cells.First(c => c.Cell.GroupIndex == group
-    //                             && c.Cell.Index == cellIndex);
-    // }
 
     public static bool IsResolved(this IEnumerable<CellStatus> cells) => cells.All(c => c.IsResolved);
 
@@ -38,7 +16,7 @@ public static class CellStatusExtensions
     {
         return cells.Where(c => c.Cell.MatrixRow == cell.Cell.MatrixRow);
     }
-    
+
     public static IEnumerable<CellStatus> OnSameMatrixColOf(this IEnumerable<CellStatus> cells, CellStatus cell)
     {
         return cells.Where(c => c.Cell.MatrixCol == cell.Cell.MatrixCol);
@@ -59,14 +37,14 @@ public static class CellStatusExtensions
     {
         return cells.Where(c => c.IsResolved);
     }
-    
+
     public static IEnumerable<CellStatus> ExcludeResolved(this IEnumerable<CellStatus> cells)
     {
         return cells.Where(c => !c.IsResolved);
     }
 
     public static CellStatus RemovePossibilities(this CellStatus cell, IEnumerable<int> values)
-    {        
+    {
         foreach (var value in values)
         {
             cell.RemovePossibility(value);

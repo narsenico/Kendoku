@@ -46,28 +46,28 @@ public static partial class SettingsParser
         return new(cells, value);
     }
 
-    public static HelpCell[] ParseHelpCellsFromArgs(string[] args, CellFactory cellFactory)
+    public static Helper[] ParseHelpersFromArgs(string[] args, CellFactory cellFactory)
     {
         return args.FindArgs("-l")
-            .Select(t => ConvertToHelpCell(t, cellFactory))
+            .Select(t => ConvertToHelper(t, cellFactory))
             .ToArray();
     }
 
-    private static HelpCell ConvertToHelpCell(string text, CellFactory cellFactory)
+    private static Helper ConvertToHelper(string text, CellFactory cellFactory)
     {
         // g:r:c,v
-        var match = HelpCellRegex().Match(text);
-        var value = match.Groups["Value"].Value.ToInt() ?? throw new ArgumentException($"{nameof(HelpCell)} argument not valid");
+        var match = HelperRegex().Match(text);
+        var value = match.Groups["Value"].Value.ToInt() ?? throw new ArgumentException($"{nameof(Helper)} argument not valid");
         var cell = cellFactory.CreateCell(
             groupIndex: match.Groups["GroupIndex"].Value.ToInt()!.Value,
             row: match.Groups["Row"].Value.ToInt()!.Value,
             col: match.Groups["Col"].Value.ToInt()!.Value);
-        return new HelpCell(cell, value);
+        return new Helper(cell, value);
     }
 
     [GeneratedRegex("^(((?<GroupIndex>\\d+):(?<Row>\\d+):(?<Col>\\d+),)+)(?<Value>\\d+)$")]
     private static partial Regex ConstraintRegex();
 
     [GeneratedRegex("^(?<GroupIndex>\\d+):(?<Row>\\d+):(?<Col>\\d+),(?<Value>\\d+)$")]
-    private static partial Regex HelpCellRegex();
+    private static partial Regex HelperRegex();
 }

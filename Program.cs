@@ -20,16 +20,14 @@ var _args = new string[] {
 };
 
 var matrixSettings = SettingsParser.ParseMatrixSettingsFromArgs(_args);
-var factory = new CellFactory(matrixSettings);
-var constraints = SettingsParser.ParseConstraintsFromArgs(_args, factory);
-var helpCells = SettingsParser.ParseHelpCellsFromArgs(_args, factory);
-var cells = CreateMatrix(factory, matrixSettings);
+var cellFactory = new CellFactory(matrixSettings);
+var constraints = SettingsParser.ParseConstraintsFromArgs(_args, cellFactory);
+var helpers = SettingsParser.ParseHelpersFromArgs(_args, cellFactory);
+var cells = CreateMatrix(cellFactory, matrixSettings);
 /** FINE CONF **/
 
-args.Dump();
-
 Console.WriteLine($"Cells {cells.Length}");
-Console.WriteLine(helpCells.ToHumanString());
+Console.WriteLine(helpers.ToHumanString());
 Console.WriteLine(constraints.ToHumanString());
 
 var listener = new ConsoleEventListener();
@@ -39,7 +37,7 @@ var resolver = new SimpleResolverImpl(listener, hashProvider);
 Console.WriteLine();
 Console.WriteLine("Resolving...");
 
-var resolved = resolver.Resolve(cells, constraints, helpCells);
+var resolved = resolver.Resolve(cells, constraints, helpers);
 
 Console.WriteLine($"...matrix is {(resolved ? "resolved!" : "not resolved!")}");
 
