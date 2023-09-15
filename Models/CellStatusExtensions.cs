@@ -3,6 +3,12 @@ namespace Kendoku.Models;
 public static class CellStatusExtensions
 {
     public static CellStatus Find(this IEnumerable<CellStatus> cells,
+                                  Cell cell)
+    {
+        return cells.First(c => c.Cell == cell);
+    }
+
+    public static CellStatus Find(this IEnumerable<CellStatus> cells,
                                 int group,
                                 int row,
                                 int col)
@@ -12,11 +18,11 @@ public static class CellStatusExtensions
                                 && c.Cell.Col == col);
     }
 
-    public static CellStatus FindByIndex(this IEnumerable<CellStatus> cells,
-                                         int group,
-                                         int cellIndex)
-    {
-        return cells.First(c => c.Cell.GroupIndex == group
-                                && c.Cell.Index == cellIndex);
-    }
+    // public static CellStatus FindByIndex(this IEnumerable<CellStatus> cells,
+    //                                      int group,
+    //                                      int cellIndex)
+    // {
+    //     return cells.First(c => c.Cell.GroupIndex == group
+    //                             && c.Cell.Index == cellIndex);
+    // }
 }

@@ -6,6 +6,5 @@ public interface IResolver
 {
     public bool Resolve(CellStatus[] cells,
                         Constraint[] constraints,
-                        HelpCell[] helpCells,
-                        IEventListener listener);
+                        HelpCell[] helpCells);
 }
