@@ -1,6 +1,5 @@
 namespace Kendoku.Models;
 
-// TODO: non mi piace tenere lo stato in Models
 public sealed class CellStatus
 {
     private readonly Cell _cell;

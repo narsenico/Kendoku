@@ -4,6 +4,11 @@ namespace kendoku.Implementations;
 
 public static class Extensions
 {
+    public static IEnumerable<Constraint> FilterBy(this IEnumerable<Constraint> constraints, CellStatus cell)
+    {
+        return constraints.Where(c => c.Cells.Contains(cell.Cell));
+    }
+
     public static CellStatus Find(this IEnumerable<CellStatus> cells,
                                   Helper helper)
     {

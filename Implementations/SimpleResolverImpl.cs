@@ -71,7 +71,7 @@ public class SimpleResolverImpl : IResolver
         foreach (var cell in cells.ExcludeResolved())
         {
             RemoveResolved(cell, cells);
-            // TODO: ApplyConstrainsts(cell, cells, constraints);
+            ApplyConstrainsts(cell, cells, constraints);
         }
     }
 
@@ -100,7 +100,31 @@ public class SimpleResolverImpl : IResolver
     private static void ApplyConstrainsts(CellStatus cell,
                                           CellStatus[] cells,
                                           Constraint[] constraints)
-    { 
-        throw new NotImplementedException();
+    {
+        foreach (var constraint in constraints.FilterBy(cell))
+        {
+            ApplyConstrainst(cell, cells, constraint);
+        }
+    }
+
+    private static void ApplyConstrainst(CellStatus cell,
+                                         CellStatus[] cells,
+                                         Constraint constraint)
+    {
+        // TODO: devo escludere quei valori che non possono risolvere il constraint
+        //  quindi se un valore sommato a qualsiasi altro valore delle altre celle non risolve il constraint va scartato
+
+        // cell 1,2,4,5,6
+        // c1   3
+        // c2   1, 2, 6
+        // sum 13
+        // scarto 1 perché sommato a 3 e a 1,2 o 6 non fa mai 13
+        // scarto 2 perché sommato a 3 e a 1,2 o 6 non fa mai 13
+        // mantengo 4 perché sommato a 3 e a 6 fa 13
+        // scarto 5 perché sommato a 3 e a 1,2 o 6 non fa mai 13
+        // scarto 6 perché sommato a 3 e a 1,2 o 6 non fa mai 13
+
+        Console.WriteLine($"Apply {constraint.ToHumanString()} to cell {cell.ToHumanString()}");
+        //throw new NotImplementedException();
     }
 }
