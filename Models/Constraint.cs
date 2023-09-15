@@ -12,6 +12,4 @@ public sealed class Constraint
     }
 
     public IEnumerable<Cell> Cells => _cells;
-
-    public bool IsResolved => _cells.All(c => c.IsResolved);
 }

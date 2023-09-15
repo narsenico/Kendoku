@@ -1,17 +1,18 @@
 using System.Text;
 using Kendoku.Models;
+using Kendoku.Resolvers;
 
 namespace Kendoku;
 
 public static class Extensions
 {
-  public static string ToHumanString(this Cell[] cells)
+  public static string ToHumanString(this IEnumerable<CellStatus> cells)
   {
     var buff = new StringBuilder();
 
     foreach (var cell in cells)
     {
-      buff.AppendLine($"[G{cell.Group}/{cell.Index}] {cell.Row}/{cell.Col} => {string.Join(',', cell.Possibilities)}");
+      buff.AppendLine($"[G{cell.Cell.GroupIndex}/{cell.Cell.Index}] {cell.Cell.Row}/{cell.Cell.Col} => {string.Join(',', cell.Possibilities)}");
     }
 
     return buff.ToString();
@@ -19,28 +20,13 @@ public static class Extensions
 
   public static string ToHumanString(this Constraint constraint)
   {
-    var cells = constraint.Cells.Select(cell => $"[G{cell.Group}/{cell.Index}] {cell.Row}/{cell.Col}");
+    var cells = constraint.Cells.Select(cell => $"[G{cell.GroupIndex}/{cell.Index}] {cell.Row}/{cell.Col}");
 
-    return $"Constraint {{ cells={string.Join(',', cells)} sum={constraint.Sum} resolved={constraint.IsResolved} }}";
+    return $"Constraint {{ cells={string.Join(',', cells)} sum={constraint.Sum} }}";
   }
 
   public static string ToHumanString(this Constraint[] constraints)
   {
     return string.Join('\n', constraints.Select(c => c.ToHumanString()));
-  }
-
-  public static Cell Find(this Cell[] cells,
-                           int group,
-                           int row,
-                           int col)
-  {
-    return cells.First(c => c.Group == group && c.Row == row && c.Col == col);
-  }
-
-  public static Cell FindByIndex(this Cell[] cells,
-                                  int group,
-                                  int cellIndex)
-  {
-    return cells.First(c => c.Group == group && c.Index == cellIndex);
   }
 }
