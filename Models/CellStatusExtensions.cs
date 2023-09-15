@@ -25,4 +25,6 @@ public static class CellStatusExtensions
     //     return cells.First(c => c.Cell.GroupIndex == group
     //                             && c.Cell.Index == cellIndex);
     // }
+
+    public static bool IsResolved(this CellStatus[] cells) => cells.All(c => c.IsResolved);
 }

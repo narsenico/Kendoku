@@ -1,15 +1,21 @@
+using kendoku.Interfaces;
+
 using Kendoku.Interfaces;
 using Kendoku.Models;
 
+
 namespace Kendoku.Implementations;
 
-class SimpleResolverImpl : IResolver
+public class SimpleResolverImpl : IResolver
 {
     private readonly IEventListener _listener;
+    private readonly IHashProvider _hashProvider;
 
-    public SimpleResolverImpl(IEventListener listener)
+    public SimpleResolverImpl(IEventListener listener,
+                              IHashProvider hashProvider)
     {
         _listener = listener;
+        _hashProvider = hashProvider;
     }
 
     public bool Resolve(CellStatus[] cells,
@@ -25,7 +31,24 @@ class SimpleResolverImpl : IResolver
 
         ApplyHelps(cells, helpCells);
 
-        // throw new NotImplementedException();
+        // se dopo ogni iterazione l'hash non cambia significa che non ci sono stati cambiamenti nelle celle
+        string hash = _hashProvider.GetHash(cells);
+
+        // TODO: l'ordine conta?
+        while (!cells.IsResolved())
+        {
+            ExecIteration(cells, constraints);
+
+            var newHash = _hashProvider.GetHash(cells);
+            if (newHash == hash) 
+            {
+                _listener.OnNothingChanged();
+                break;
+            }
+
+            hash = newHash;
+        }
+        
         return false;
     }
 
@@ -38,5 +61,20 @@ class SimpleResolverImpl : IResolver
             cell.Resolve(help.Value);
             _listener.OnCellResolved(cell);
         }
+    }
+
+    private void ExecIteration(CellStatus[] cells,
+                               Constraint[] constraints)
+    {
+        foreach (var cell in cells)
+        {
+            ExecOnCell(cell, constraints);
+        }
+    }
+
+    private void ExecOnCell(CellStatus cell,
+                            Constraint[] constraints)
+    {
+        // TODO
     }
 }

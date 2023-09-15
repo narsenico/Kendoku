@@ -9,4 +9,9 @@ public class ConsoleEventListener : IEventListener
     {
         Console.WriteLine($"Resolved {cell.ToHumanString()}");
     }
+
+    public void OnNothingChanged()
+    {
+        Console.WriteLine("Noting changed from previous iteration");
+    }
 }
