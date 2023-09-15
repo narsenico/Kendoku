@@ -1,3 +1,3 @@
 ﻿namespace Kendoku.Models;
 
-public record HelpCell(int GroupIndex, int Row, int Col, int Value);
+public record HelpCell(Cell cell, int Value);

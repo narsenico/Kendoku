@@ -11,9 +11,7 @@ public static class CellStatusExtensions
     public static CellStatus Find(this IEnumerable<CellStatus> cells,
                                   HelpCell cell)
     {
-        return cells.First(c => c.Cell.GroupIndex == cell.GroupIndex
-                                && c.Cell.Row == cell.Row
-                                && c.Cell.Col == cell.Col);
+        return cells.First(c => c.Cell == cell.cell);
     }
 
     public static CellStatus Find(this IEnumerable<CellStatus> cells,
