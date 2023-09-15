@@ -34,9 +34,14 @@ public static class CellStatusExtensions
 
     public static bool IsResolved(this IEnumerable<CellStatus> cells) => cells.All(c => c.IsResolved);
 
-    public static IEnumerable<CellStatus> OnSameRowOf(this IEnumerable<CellStatus> cells, CellStatus cell)
+    public static IEnumerable<CellStatus> OnSameMatrixRowOf(this IEnumerable<CellStatus> cells, CellStatus cell)
     {
-        throw new NotImplementedException();
+        return cells.Where(c => c.Cell.MatrixRow == cell.Cell.MatrixRow);
+    }
+    
+    public static IEnumerable<CellStatus> OnSameMatrixColOf(this IEnumerable<CellStatus> cells, CellStatus cell)
+    {
+        return cells.Where(c => c.Cell.MatrixCol == cell.Cell.MatrixCol);
     }
 
     public static IEnumerable<CellStatus> OnGroupOf(this IEnumerable<CellStatus> cells, CellStatus cell)
@@ -66,6 +71,18 @@ public static class CellStatusExtensions
         {
             cell.RemovePossibility(value);
         }
+        return cell;
+    }
+
+    public static IEnumerable<int> Values(this IEnumerable<CellStatus> cells)
+    {
+        return cells.Select(c => c.Value);
+    }
+
+    public static CellStatus PurgePossibilitiesOf(this IEnumerable<CellStatus> cells, CellStatus cell)
+    {
+        var values = cells.Values();
+        cell.RemovePossibilities(values);
         return cell;
     }
 }
