@@ -7,6 +7,6 @@ public class ConsoleEventListener : IEventListener
 {
     public void OnCellResolved(CellStatus cell)
     {
-        Console.WriteLine(cell.ToHumanString());
+        Console.WriteLine($"Resolved {cell.ToHumanString()}");
     }
 }

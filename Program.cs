@@ -4,31 +4,19 @@ using Kendoku.Implementations;
 
 // TODO: leggere tutte le configurazioni da args
 /** INIZIO CONF **/
-var matrixSettings = new MatrixSettings
-{
-  GroupCount = 6,
-  GroupSize = 6,
-  GroupRowSize = 3,
-};
+var _args = new string[] { "-c", "6", "-s", "6", "-r", "3", "-t", "0:0:0,0:0:1,0:1:1,13", "-t", "0:1:0,2:0:0,3", "-l", "0:0:1,3" };
 
-var constraints = new Constraint[]
-{
-  new(new Cell[] {
-    new(0, 1, 0),
-    new(2, 0, 0)
-  }, 3)
-};
-
-var helpCells = new HelpCell[]
-{
-  new(0, 1, 1, 6)
-};
+var matrixSettings = SettingsParser.ParseMatrixSettingsFromArgs(_args);
+var constraints = SettingsParser.ParseConstraintsFromArgs(_args);
+var helpCells = SettingsParser.ParseHelpCellsFromArgs(_args);
 
 var cells = Create(matrixSettings);
 /** FINE CONF **/
 
+args.Dump();
+
 Console.WriteLine($"Cells {cells.Length}");
-Console.WriteLine(cells.ToHumanString());
+Console.WriteLine(helpCells.ToHumanString());
 Console.WriteLine(constraints.ToHumanString());
 
 var listener = new ConsoleEventListener();
@@ -36,7 +24,12 @@ var resolver = new SimpleResolverImpl(listener);
 
 Console.WriteLine("Resolving...");
 
-resolver.Resolve(cells, constraints, helpCells);
+var resolved = resolver.Resolve(cells, constraints, helpCells);
+
+Console.WriteLine($"...matrix is {(resolved ? "resolved!" : "not resolved!")}");
+
+
+/********************************/
 
 CellStatus[] Create(MatrixSettings settings)
 {
