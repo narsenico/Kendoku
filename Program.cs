@@ -1,4 +1,5 @@
 ﻿using Kendoku;
+using Kendoku.Models;
 
 var cells = Create(groupCount: 6,
                    cellPerGroup: 6,

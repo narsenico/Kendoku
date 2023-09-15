@@ -1,4 +1,4 @@
-namespace Kendoku;
+namespace Kendoku.Models;
 
 public sealed class Cell
 {

@@ -1,4 +1,4 @@
-namespace Kendoku;
+namespace Kendoku.Models;
 
 record Group(int GroupIndex, int Size, int CellPerRow)
 {
