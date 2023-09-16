@@ -58,6 +58,13 @@ public class SimpleResolverImpl : IResolver
         {
             var cell = cells.Find(help);
             cell.Resolve(help.Value);
+
+#if DEBUG
+            if (cell.IsResolved)
+            {
+                Console.WriteLine($"Resolved with {help.ToHumanString()} => {cell.ToHumanString()}");
+            }
+#endif
         }
     }
 
@@ -138,7 +145,12 @@ public class SimpleResolverImpl : IResolver
             }
         }
 
-        Console.WriteLine($"Apply {constraint.ToHumanString()} to cell {cell.ToHumanString()}");
+#if DEBUG
+        if (cell.IsResolved)
+        {
+            Console.WriteLine($"Resolved with {constraint.ToHumanString()} => {cell.ToHumanString()}");
+        }
+#endif
     }
 
     private static bool CheckConstraint(int[][] values, int initialValue, int check)
