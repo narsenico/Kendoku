@@ -5,6 +5,11 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kendoku", "kendoku.csproj", "{436E048E-FEC9-47AB-B2D6-8A3E2C0AFF23}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{0C84CF43-E868-4587-8DCD-063B49F4698D}"
+	ProjectSection(SolutionItems) = preProject
+		sample1.txt = sample1.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
