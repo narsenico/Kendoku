@@ -24,7 +24,7 @@ public static class Extensions
     public static CellStatus Find(this IEnumerable<CellStatus> cells,
                                   Helper helper)
     {
-        return cells.First(c => c.Cell == helper.cell);
+        return cells.First(c => c.Cell == helper.Cell);
     }
 
     public static bool IsResolved(this IEnumerable<CellStatus> cells) => cells.All(c => c.IsResolved);

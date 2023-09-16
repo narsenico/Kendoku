@@ -12,7 +12,7 @@ public static class Extensions
     
     public static string ToHumanString(this Helper helper)
     {
-        return $"Helper {{ cell={helper.cell.ToHumanString()} value={helper.Value} }}";
+        return $"Helper {{ cell={helper.Cell} value={helper.Value} }}";
     }
 
     public static string ToHumanString(this IEnumerable<Helper> helpers)

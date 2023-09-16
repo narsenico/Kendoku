@@ -1,3 +1,3 @@
 ﻿namespace Kendoku.Models;
 
-public record Helper(Cell cell, int Value);
+public record Helper(Cell Cell, int Value);
