@@ -9,7 +9,7 @@ namespace Kendoku.Implementations;
 public class HashProvider : IHashProvider
 {
     public string GetHash(IEnumerable<CellStatus> cells)
-    {        
+    {
         using var stream = new MemoryStream();
         foreach (var cell in cells)
         {

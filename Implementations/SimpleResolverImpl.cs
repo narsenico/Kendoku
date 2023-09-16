@@ -33,12 +33,12 @@ public class SimpleResolverImpl : IResolver
         // se dopo ogni iterazione l'hash non cambia significa che non ci sono stati cambiamenti nelle celle
         string hash = _hashProvider.GetHash(cells);
 
-        for (var ii=1; !cells.IsResolved(); ii++)
+        for (var ii = 1; !cells.IsResolved(); ii++)
         {
             ExecIteration(cells, constraints);
 
             var newHash = _hashProvider.GetHash(cells);
-            if (newHash == hash) 
+            if (newHash == hash)
             {
                 _listener.OnNothingChanged();
                 break;
@@ -47,7 +47,7 @@ public class SimpleResolverImpl : IResolver
             hash = newHash;
             _listener.OnEndIteration(ii, cells.OnlyResolved().Count());
         }
-        
+
         return cells.IsResolved();
     }
 
@@ -168,7 +168,7 @@ public class SimpleResolverImpl : IResolver
         var maxIteration = values.Aggregate(1, (a, r) => a *= r.Length);
         var rowIndexes = new int[values.Length]; // 0 0 0
 
-        for (int ii=0;ii<maxIteration;ii++)
+        for (int ii = 0; ii < maxIteration; ii++)
         {
             var acc = Accumulate(values, rowIndexes, 0, initialValue);
             if (acc == check)
