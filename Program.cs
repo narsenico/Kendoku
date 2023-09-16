@@ -42,11 +42,12 @@ var hashProvider = new HashProvider();
 var resolver = new SimpleResolverImpl(listener, hashProvider);
 
 Console.WriteLine();
-Console.WriteLine("Resolving...");
+Console.WriteLine("Start...");
 
 var resolved = resolver.Resolve(cells, constraints, helpers);
 
-Console.WriteLine($"...matrix is {(resolved ? "resolved!" : "not resolved!")}");
+Console.WriteLine();
+Console.WriteLine($"Game is {(resolved ? "resolved!" : "not resolved!")}");
 
 Console.WriteLine();
 Console.WriteLine("Last result:");

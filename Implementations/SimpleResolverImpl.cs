@@ -102,8 +102,15 @@ public class SimpleResolverImpl : IResolver
             .Exclude(cell)
             .OnlyResolved()
             .PurgePossibilitiesOf(cell);
+
+#if DEBUG
+        if (cell.IsResolved)
+        {
+            Console.WriteLine($"Resolved with sudoku rules => {cell.ToHumanString()}");
+        }
+#endif
     }
-    
+
     private static void ApplyConstrainsts(CellStatus cell,
                                           CellStatus[] cells,
                                           Constraint[] constraints)
@@ -118,7 +125,7 @@ public class SimpleResolverImpl : IResolver
                                          CellStatus[] cells,
                                          Constraint constraint)
     {
-        // TODO: devo escludere quei valori che non possono risolvere il constraint
+        // escludo quei valori che non possono risolvere il constraint
         //  quindi se un valore sommato a qualsiasi altro valore delle altre celle non risolve il constraint va scartato
 
         // cell 1,2,4,5,6
@@ -131,17 +138,16 @@ public class SimpleResolverImpl : IResolver
         // scarto 5 perch� sommato a 3 e a 1,2 o 6 non fa mai 13
         // scarto 6 perch� sommato a 3 e a 1,2 o 6 non fa mai 13
 
-        // 1. cerco le altre celle legate al constraint
         var constrainedCells = cells.OnConstarint(constraint)
             .Exclude(cell);
 
-        var ps = constrainedCells.Select(c => c.Possibilities.ToArray()).ToArray();
+        var otherValues = constrainedCells.Select(c => c.Possibilities.ToArray()).ToArray();
 
-        foreach (var p in cell.Possibilities.ToArray())
+        foreach (var cellValue in cell.Possibilities.ToArray())
         {
-            if (!CheckConstraint(ps, p, constraint.Sum))
+            if (!CheckConstraint(otherValues, cellValue, constraint.Sum))
             {
-                cell.RemovePossibility(p);
+                cell.RemovePossibility(cellValue);
             }
         }
 
@@ -174,6 +180,7 @@ public class SimpleResolverImpl : IResolver
         return false;
     }
 
+    // TODO: questa funzione mi fa ribrezzo!
     private static int Accumulate(int[][] values, int[] indexes, int row, int value)
     {
         var col = indexes[row];
