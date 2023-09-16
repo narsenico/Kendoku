@@ -22,8 +22,8 @@ public class SimpleResolverImpl : IResolver
     {
         // 1. applico gli aiuti
         // 2. inizio iterazione
-        //  - per ogni cella applico constraint
         //  - per ogni cella applico regole sudoku
+        //  - per ogni cella applico constraint
         //  - se non ci sono state modifiche nello stato della matrice esco (altrimenti loop infinito)
         //  - reitero fino a che tutte le celle non sono risolte
 
@@ -73,7 +73,7 @@ public class SimpleResolverImpl : IResolver
     {
         foreach (var cell in cells.ExcludeResolved())
         {
-            RemoveResolved(cell, cells);
+            ApplySudokuRules(cell, cells);
         }
 
         foreach (var cell in cells.ExcludeResolved())
@@ -82,22 +82,22 @@ public class SimpleResolverImpl : IResolver
         }
     }
 
-    private static void RemoveResolved(CellStatus cell,
-                                       CellStatus[] cells)
+    private static void ApplySudokuRules(CellStatus cell,
+                                         CellStatus[] cells)
     {
-        // 1. rimuovo i numeri gi� usati sulla stessa riga della matrice
+        // 1. rimuovo i numeri già usati sulla stessa riga della matrice
         cells.OnSameMatrixRowOf(cell)
             .Exclude(cell)
             .OnlyResolved()
             .PurgePossibilitiesOf(cell);
 
-        // 2. rimuovo i numeri gi� usati sulla stessa colonna della matrice
+        // 2. rimuovo i numeri già usati sulla stessa colonna della matrice
         cells.OnSameMatrixColOf(cell)
             .Exclude(cell)
             .OnlyResolved()
             .PurgePossibilitiesOf(cell);
 
-        // 3. rimuovo i numeri gi� usati all'interno del gruppo
+        // 3. rimuovo i numeri già usati all'interno del gruppo
         cells.OnGroupOf(cell)
             .Exclude(cell)
             .OnlyResolved()
@@ -132,11 +132,11 @@ public class SimpleResolverImpl : IResolver
         // c1   3
         // c2   1, 2, 6
         // sum 13
-        // scarto 1 perch� sommato a 3 e a 1,2 o 6 non fa mai 13
-        // scarto 2 perch� sommato a 3 e a 1,2 o 6 non fa mai 13
-        // mantengo 4 perch� sommato a 3 e a 6 fa 13
-        // scarto 5 perch� sommato a 3 e a 1,2 o 6 non fa mai 13
-        // scarto 6 perch� sommato a 3 e a 1,2 o 6 non fa mai 13
+        // scarto 1 perché sommato a 3 e a 1,2 o 6 non fa mai 13
+        // scarto 2 perché sommato a 3 e a 1,2 o 6 non fa mai 13
+        // mantengo 4 perché sommato a 3 e a 6 fa 13
+        // scarto 5 perché sommato a 3 e a 1,2 o 6 non fa mai 13
+        // scarto 6 perché sommato a 3 e a 1,2 o 6 non fa mai 13
 
         var constrainedCells = cells.OnConstarint(constraint)
             .Exclude(cell);
