@@ -135,6 +135,15 @@ internal class FileToArgsConverter
     {
         var groups = new List<Group>();
 
+        // TODO: altro metodo che quello sotto non mi sconfiffera
+        //  trovo la posizione di tutti i * (riga, colonna)
+        //  parto dal primo che sarà l'inizio del primo gruppo
+        //  cerco il più vicino * sulla stessa riga, che sarà la End.Col del gruppo
+        //  cerco il più vicino * sulla stessa colonna, che sarà la End.Row del gruppo
+        //  ci sono altri * sulla stessa riga? allora elaboro altro gruppo
+        //  altrimenti ci sono altri * sulla stessa colonna? allora elaboro altro gruppo
+        //  oppure termino
+
         var groupRows = lines.GetRange(matrixStart.Row, matrixEnd.Row - matrixStart.Row)
             .Select((line, i) => (new { line, Row = matrixStart.Row + i }))
             .Where(l => IsMatrixCorner(l.line[0]))
