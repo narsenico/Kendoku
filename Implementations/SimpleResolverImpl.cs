@@ -28,12 +28,12 @@ public class SimpleResolverImpl : IResolver
         //  - reitero fino a che tutte le celle non sono risolte
 
         ApplyHelpers(cells, helpers);
+        _listener.OnEndIteration(0, cells.OnlyResolved().Count());
 
         // se dopo ogni iterazione l'hash non cambia significa che non ci sono stati cambiamenti nelle celle
         string hash = _hashProvider.GetHash(cells);
 
-        // TODO: l'ordine conta?
-        for (var ii=0; !cells.IsResolved(); ii++)
+        for (var ii=1; !cells.IsResolved(); ii++)
         {
             ExecIteration(cells, constraints);
 
@@ -45,20 +45,19 @@ public class SimpleResolverImpl : IResolver
             }
 
             hash = newHash;
-            _listener.OnEndIteration(ii);
+            _listener.OnEndIteration(ii, cells.OnlyResolved().Count());
         }
         
-        return false;
+        return cells.IsResolved();
     }
 
-    private void ApplyHelpers(CellStatus[] cells,
-                            Helper[] helpers)
+    private static void ApplyHelpers(CellStatus[] cells,
+                                     Helper[] helpers)
     {
         foreach (var help in helpers)
         {
             var cell = cells.Find(help);
             cell.Resolve(help.Value);
-            _listener.OnCellResolved(cell);
         }
     }
 
@@ -68,6 +67,10 @@ public class SimpleResolverImpl : IResolver
         foreach (var cell in cells.ExcludeResolved())
         {
             RemoveResolved(cell, cells);
+        }
+
+        foreach (var cell in cells.ExcludeResolved())
+        {
             ApplyConstrainsts(cell, cells, constraints);
         }
     }
@@ -121,7 +124,66 @@ public class SimpleResolverImpl : IResolver
         // scarto 5 perch� sommato a 3 e a 1,2 o 6 non fa mai 13
         // scarto 6 perch� sommato a 3 e a 1,2 o 6 non fa mai 13
 
+        // 1. cerco le altre celle legate al constraint
+        var constrainedCells = cells.OnConstarint(constraint)
+            .Exclude(cell);
+
+        var ps = constrainedCells.Select(c => c.Possibilities.ToArray()).ToArray();
+
+        foreach (var p in cell.Possibilities.ToArray())
+        {
+            if (!CheckConstraint(ps, p, constraint.Sum))
+            {
+                cell.RemovePossibility(p);
+            }
+        }
+
         Console.WriteLine($"Apply {constraint.ToHumanString()} to cell {cell.ToHumanString()}");
-        //throw new NotImplementedException();
+    }
+
+    private static bool CheckConstraint(int[][] values, int initialValue, int check)
+    {
+        // 1,2,4,5,6 <= value
+        // 3         <= values[0]
+        // 1, 2, 6   <= values[1]
+
+        var maxIteration = values.Aggregate(1, (a, r) => a *= r.Length);
+        var rowIndexes = new int[values.Length]; // 0 0 0
+
+        for (int ii=0;ii<maxIteration;ii++)
+        {
+            var acc = Accumulate(values, rowIndexes, 0, initialValue);
+            if (acc == check)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static int Accumulate(int[][] values, int[] indexes, int row, int value)
+    {
+        var col = indexes[row];
+        value += values[row][col];
+
+        if (row == values.Length - 1) // non ci sono più altre righe
+        {
+            if (col == values[row].Length - 1) // non ci sono più altre colonne su questa riga
+            {
+                if (row != 0)
+                {
+                    indexes[row - 1] = indexes[row - 1] + 1; // passo all'elemento successivo della riga prima
+                    indexes[row] = 0; // mentre per questa riga torno alla prima posizione
+                }
+            }
+            else
+            {
+                indexes[row] = indexes[row] + 1; // passo all'elemento successivo di questa riga
+            }
+            return value;
+        }
+
+        return Accumulate(values, indexes, row + 1, value);
     }
 }

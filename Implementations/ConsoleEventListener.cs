@@ -1,18 +1,12 @@
 using Kendoku.Interfaces;
-using Kendoku.Models;
 
 namespace Kendoku.Implementations;
 
 public class ConsoleEventListener : IEventListener
 {
-    public void OnCellResolved(CellStatus cell)
+    public void OnEndIteration(int iteration, int cellResolvedCount)
     {
-        Console.WriteLine($"Resolved {cell.ToHumanString()}");
-    }
-
-    public void OnEndIteration(int iteration)
-    {
-        Console.WriteLine($"End iteration #{iteration}");
+        Console.WriteLine($"End iteration #{iteration}: resolved={cellResolvedCount}");
     }
 
     public void OnNothingChanged()

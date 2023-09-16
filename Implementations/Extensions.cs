@@ -4,9 +4,21 @@ namespace Kendoku.Implementations;
 
 public static class Extensions
 {
+    public static bool Is(this CellStatus cell, int groupIndex, int row, int col)
+    {
+        return cell.Cell.GroupIndex == groupIndex
+            && cell.Cell.Row == row
+            && cell.Cell.Col == col;
+    }
+
     public static IEnumerable<Constraint> FilterBy(this IEnumerable<Constraint> constraints, CellStatus cell)
     {
         return constraints.Where(c => c.Cells.Contains(cell.Cell));
+    }
+
+    public static IEnumerable<CellStatus> OnConstarint(this IEnumerable<CellStatus> cells, Constraint constraint)
+    {
+        return cells.Where(c => constraint.Cells.Contains(c.Cell));
     }
 
     public static CellStatus Find(this IEnumerable<CellStatus> cells,

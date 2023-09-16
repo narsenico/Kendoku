@@ -1,12 +1,8 @@
-using Kendoku.Models;
-
 namespace Kendoku.Interfaces;
 
 public interface IEventListener
 {
-    public void OnCellResolved(CellStatus cell);
-
     public void OnNothingChanged();
 
-    public void OnEndIteration(int iteration);
+    public void OnEndIteration(int iteration, int cellResolvedCount);
 }

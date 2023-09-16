@@ -43,6 +43,11 @@ public sealed class CellStatus
 
     private void OnPossibilitiesChanged()
     {
+        if (_possibilities.Count == 0)
+        {
+            throw new InvalidOperationException("Zero possibilities!");
+        }
+
         if (_possibilities.Count == 1)
         {
             Value = _possibilities.First();
