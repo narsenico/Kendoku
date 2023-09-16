@@ -5,11 +5,6 @@ namespace Kendoku;
 public static class Extensions
 {
 
-    public static string ToHumanString(this Cell cell)
-    {
-        return $"[{cell.MatrixRow}/{cell.MatrixCol}]{cell.GroupIndex}/{cell.Row}/{cell.Col}";
-    }
-    
     public static string ToHumanString(this Helper helper)
     {
         return $"Helper {{ cell={helper.Cell} value={helper.Value} }}";
@@ -22,7 +17,7 @@ public static class Extensions
 
     public static string ToHumanString(this CellStatus cell)
     {
-        return $"{cell.Cell.ToHumanString()} => {string.Join(',', cell.Possibilities)}";
+        return $"{cell.Cell} => {string.Join(',', cell.Possibilities)}";
     }
 
     public static string ToHumanString(this IEnumerable<CellStatus> cells)
@@ -32,9 +27,7 @@ public static class Extensions
 
     public static string ToHumanString(this Constraint constraint)
     {
-        var cells = constraint.Cells.Select(cell => cell.ToHumanString());
-
-        return $"Constraint {{ cells={string.Join(',', cells)} sum={constraint.Sum} }}";
+        return $"Constraint {{ cells={string.Join(',', constraint.Cells)} sum={constraint.Sum} }}";
     }
 
     public static string ToHumanString(this Constraint[] constraints)
