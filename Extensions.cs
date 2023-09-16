@@ -91,4 +91,9 @@ public static class Extensions
             }
         }
     }
+
+    public static bool All<T>(this IEnumerable<T> source, Func<T, int, bool> predicate)
+    {
+        return source.Select((t, i) => predicate(t, i)).All(t => t);
+    }
 }

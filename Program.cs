@@ -46,6 +46,11 @@ Console.WriteLine("Start...");
 
 var resolved = resolver.Resolve(cells, constraints, helpers);
 
+if (resolved && !EnsureMatrixResolved(cells, matrixSettings))
+{
+    throw new InvalidOperationException("Resolver doesn't tell the truth: game not resolved!");
+}
+
 Console.WriteLine();
 Console.WriteLine($"Game is {(resolved ? "resolved!" : "not resolved!")}");
 
@@ -63,4 +68,45 @@ CellStatus[] CreateMatrix(CellFactory factory, MatrixSettings settings)
       .SelectMany(groupIndex => factory.CreateGroupCells(groupIndex))
       .Select(cell => new CellStatus(cell, possibilities))
       .ToArray();
+}
+
+bool EnsureMatrixResolved(IEnumerable<CellStatus> cells, MatrixSettings settings)
+{
+    var possibilities = settings.GetPossibilities().Order().ToArray();
+
+    var notResolvedGroups = cells.GroupBy(c => c.Cell.GroupIndex)
+        .Where(group => !EnsureUniqueValues(group, possibilities))
+        .Select(group => group.Key);
+
+    var notResolvedRows = cells.GroupBy(c => c.Cell.MatrixRow)
+        .Where(group => !EnsureUniqueValues(group, possibilities))
+        .Select(group => group.Key);
+
+    var notResolvedCols = cells.GroupBy(c => c.Cell.MatrixCol)
+        .Where(group => !EnsureUniqueValues(group, possibilities))
+        .Select(group => group.Key);
+
+    foreach (var g in notResolvedGroups)
+    {
+        Console.WriteLine($"Group {g} not resolved!");
+    }
+
+    foreach (var r in notResolvedRows)
+    {
+        Console.WriteLine($"Row {r} not resolved!");
+    }
+
+    foreach (var c in notResolvedCols)
+    {
+        Console.WriteLine($"Col {c} not resolved!");
+    }
+
+    return !notResolvedGroups.Any()
+        && !notResolvedRows.Any()
+        && !notResolvedCols.Any();
+}
+
+bool EnsureUniqueValues(IEnumerable<CellStatus> cells, int[] possibilities)
+{
+    return cells.Values().Order().SequenceEqual(possibilities);
 }
