@@ -4,7 +4,6 @@ namespace Kendoku;
 
 public static class Extensions
 {
-
     public static string ToHumanString(this Helper helper)
     {
         return $"Helper {{ cell={helper.Cell} value={helper.Value} }}";
