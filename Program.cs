@@ -1,8 +1,6 @@
 ﻿using Kendoku;
 using Kendoku.Models;
 using Kendoku.Implementations;
-using kendoku.Implementations;
-using kendoku.Interfaces;
 
 // TODO: leggere tutte le configurazioni da args
 /** INIZIO CONF **/

@@ -1,7 +1,6 @@
-﻿using Kendoku;
-using Kendoku.Models;
+﻿using Kendoku.Models;
 
-namespace kendoku.Interfaces;
+namespace Kendoku.Implementations;
 
 public class CellFactory
 {

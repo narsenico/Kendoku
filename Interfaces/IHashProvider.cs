@@ -1,6 +1,6 @@
 ﻿using Kendoku.Models;
 
-namespace kendoku.Interfaces;
+namespace Kendoku.Interfaces;
 
 public interface IHashProvider
 {

@@ -1,6 +1,3 @@
-using kendoku.Implementations;
-using kendoku.Interfaces;
-
 using Kendoku.Interfaces;
 using Kendoku.Models;
 
@@ -78,19 +75,19 @@ public class SimpleResolverImpl : IResolver
     private static void RemoveResolved(CellStatus cell,
                                        CellStatus[] cells)
     {
-        // 1. rimuovo i numeri già usati sulla stessa riga della matrice
+        // 1. rimuovo i numeri giï¿½ usati sulla stessa riga della matrice
         cells.OnSameMatrixRowOf(cell)
             .Exclude(cell)
             .OnlyResolved()
             .PurgePossibilitiesOf(cell);
 
-        // 2. rimuovo i numeri già usati sulla stessa colonna della matrice
+        // 2. rimuovo i numeri giï¿½ usati sulla stessa colonna della matrice
         cells.OnSameMatrixColOf(cell)
             .Exclude(cell)
             .OnlyResolved()
             .PurgePossibilitiesOf(cell);
 
-        // 3. rimuovo i numeri già usati all'interno del gruppo
+        // 3. rimuovo i numeri giï¿½ usati all'interno del gruppo
         cells.OnGroupOf(cell)
             .Exclude(cell)
             .OnlyResolved()
@@ -118,11 +115,11 @@ public class SimpleResolverImpl : IResolver
         // c1   3
         // c2   1, 2, 6
         // sum 13
-        // scarto 1 perché sommato a 3 e a 1,2 o 6 non fa mai 13
-        // scarto 2 perché sommato a 3 e a 1,2 o 6 non fa mai 13
-        // mantengo 4 perché sommato a 3 e a 6 fa 13
-        // scarto 5 perché sommato a 3 e a 1,2 o 6 non fa mai 13
-        // scarto 6 perché sommato a 3 e a 1,2 o 6 non fa mai 13
+        // scarto 1 perchï¿½ sommato a 3 e a 1,2 o 6 non fa mai 13
+        // scarto 2 perchï¿½ sommato a 3 e a 1,2 o 6 non fa mai 13
+        // mantengo 4 perchï¿½ sommato a 3 e a 6 fa 13
+        // scarto 5 perchï¿½ sommato a 3 e a 1,2 o 6 non fa mai 13
+        // scarto 6 perchï¿½ sommato a 3 e a 1,2 o 6 non fa mai 13
 
         Console.WriteLine($"Apply {constraint.ToHumanString()} to cell {cell.ToHumanString()}");
         //throw new NotImplementedException();

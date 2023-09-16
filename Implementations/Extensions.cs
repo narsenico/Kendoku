@@ -1,6 +1,6 @@
 using Kendoku.Models;
 
-namespace kendoku.Implementations;
+namespace Kendoku.Implementations;
 
 public static class Extensions
 {

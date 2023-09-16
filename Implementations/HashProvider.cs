@@ -1,10 +1,10 @@
-﻿using kendoku.Interfaces;
+﻿using Kendoku.Interfaces;
 
 using Kendoku.Models;
 
 using System.Security.Cryptography;
 
-namespace kendoku.Implementations;
+namespace Kendoku.Implementations;
 
 public class HashProvider : IHashProvider
 {
