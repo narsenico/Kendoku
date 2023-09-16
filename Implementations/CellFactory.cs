@@ -1,8 +1,9 @@
-﻿using Kendoku.Models;
+﻿using Kendoku.Interfaces;
+using Kendoku.Models;
 
 namespace Kendoku.Implementations;
 
-public class CellFactory
+public class CellFactory : ICellFactory
 {
     private readonly MatrixSettings _settings;
 

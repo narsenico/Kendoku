@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 
 using Kendoku.Implementations;
+using Kendoku.Interfaces;
 using Kendoku.Models;
 
 namespace Kendoku;
@@ -19,14 +20,14 @@ public static partial class SettingsParser
         };
     }
 
-    public static Constraint[] ParseConstraintsFromArgs(string[] args, CellFactory cellFactory)
+    public static Constraint[] ParseConstraintsFromArgs(string[] args, ICellFactory cellFactory)
     {
         return args.FindArgs("-t")
             .Select(t => ConvertToConstraint(t, cellFactory))
             .ToArray();
     }
 
-    private static Constraint ConvertToConstraint(string text, CellFactory cellFactory)
+    private static Constraint ConvertToConstraint(string text, ICellFactory cellFactory)
     {
         // g:r:c[,...g:r:c],v
         var match = ConstraintRegex().Match(text);
@@ -45,14 +46,14 @@ public static partial class SettingsParser
         return new(cells, value);
     }
 
-    public static Helper[] ParseHelpersFromArgs(string[] args, CellFactory cellFactory)
+    public static Helper[] ParseHelpersFromArgs(string[] args, ICellFactory cellFactory)
     {
         return args.FindArgs("-l")
             .Select(t => ConvertToHelper(t, cellFactory))
             .ToArray();
     }
 
-    private static Helper ConvertToHelper(string text, CellFactory cellFactory)
+    private static Helper ConvertToHelper(string text, ICellFactory cellFactory)
     {
         // g:r:c,v
         var match = HelperRegex().Match(text);
