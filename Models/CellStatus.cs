@@ -45,7 +45,7 @@ public sealed class CellStatus
     {
         if (_possibilities.Count == 0)
         {
-            throw new InvalidOperationException("Zero possibilities!");
+            throw new InvalidOperationException($"Zero possibilities for cell {Cell}!");
         }
 
         if (_possibilities.Count == 1)
