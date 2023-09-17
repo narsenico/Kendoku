@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "kendoku": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\dev\\VisualStudioProjects\\Kendoku\\Samples\\sample1.txt\""
+    }
+  }
+}
