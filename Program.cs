@@ -36,7 +36,8 @@ Console.WriteLine($"Game is {(resolved ? "resolved!" : "not resolved!")}");
 
 Console.WriteLine();
 Console.WriteLine("Last result:");
-Console.WriteLine(cells.ToHumanString());
+//Console.WriteLine(cells.ToHumanString());
+PrintResult(cells);
 
 /********************************/
 
@@ -120,4 +121,10 @@ string[] ParseArgs(string[] args)
     }
 
     return args;
+}
+
+void PrintResult(IEnumerable<CellStatus> cells)
+{
+    var converter = new CellsToStringConverter();
+    Console.WriteLine(converter.ConvertToString(cells));
 }
