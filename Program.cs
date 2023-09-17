@@ -100,7 +100,8 @@ bool PrintUsage(string[] args)
 {
     if (args.Length == 0)
     {
-        throw new NotImplementedException();
+        Console.WriteLine($"Usage: {System.AppDomain.CurrentDomain.FriendlyName} <filename>");
+        return true;
     }
 
     return false;
@@ -109,8 +110,11 @@ bool PrintUsage(string[] args)
 bool PrintHelp(string[] args)
 {
     if (args.Contains("-h") || args.Contains("--help")) 
-    { 
-        throw new NotImplementedException();
+    {
+        Console.WriteLine($"Usage: {System.AppDomain.CurrentDomain.FriendlyName} <filename>");
+        Console.WriteLine("Resolve Kendoku game");
+        // TODO: stampare help formato file
+        return true;
     }
 
     return false;
