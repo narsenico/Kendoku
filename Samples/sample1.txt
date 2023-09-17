@@ -3,17 +3,33 @@
 # una lettera minuscola corrisponde un aiuto, il cui valore è riportato in coda
 
 *---*---*
-|AaB|   |
-|CAB|   |
+|AaB|DDE|
+|CAB|FeE|
 *---*---*
-|C  |   |
-|   |   |
+|CGG|FLL|
+|HHI|MMN|
 *---*---*
-| 5 |   |
-|   |   |
+|OoI|QRN|
+|OPP|QrR|
 *---*---*
 
 A=13
 B=6
 C=3
+D=8
+E=12
+F=6
+G=10
+H=7
+I=7
+L=5
+M=10
+N=7
+O=14
+P=3
+Q=5
+R=10
 a=3
+e=4
+o=5
+r=5
