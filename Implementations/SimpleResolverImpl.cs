@@ -103,7 +103,22 @@ public class SimpleResolverImpl : IResolver
             .OnlyResolved()
             .PurgePossibilitiesOf(cell);
 
-        // TODO: se la cella un numero che ha solo lei rispetto alla riga, colonna o gruppo, allora è quello risolutivo
+        // 4. se la cella ha un numero che ha solo lei rispetto alla riga, 
+        // colonna o gruppo, allora è quello risolutivo
+        cells.OnSameMatrixRowOf(cell)
+            .Exclude(cell)
+            .SelectMany(c => c.Possibilities)
+            .MantainUniqueValueIn(cell);
+
+        cells.OnSameMatrixColOf(cell)
+            .Exclude(cell)
+            .SelectMany(c => c.Possibilities)
+            .MantainUniqueValueIn(cell);
+
+        cells.OnGroupOf(cell)
+            .Exclude(cell)
+            .SelectMany(c => c.Possibilities)
+            .MantainUniqueValueIn(cell);
 
 #if DEBUG
         if (cell.IsResolved)

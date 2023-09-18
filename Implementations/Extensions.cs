@@ -80,4 +80,14 @@ public static class Extensions
         cell.RemovePossibilities(values);
         return cell;
     }
+
+    public static CellStatus MantainUniqueValueIn(this IEnumerable<int> values, CellStatus cell)
+    {
+        var uniques = cell.Possibilities.Except(values);
+        if (uniques.Count() == 1)
+        {
+            cell.Resolve(uniques.First());
+        }
+        return cell;
+    }
 }
