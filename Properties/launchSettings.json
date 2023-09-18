@@ -3,6 +3,10 @@
     "kendoku": {
       "commandName": "Project",
       "commandLineArgs": "Samples/sample1.txt"
+    },
+    "kendoku_fail": {
+      "commandName": "Project",
+      "commandLineArgs": "Samples/sample_fail.txt"
     }
   }
 }

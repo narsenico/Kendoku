@@ -1,0 +1,35 @@
+# griglia 2x3, con blocchi 3x2
+# a lettere uguali (case insensitive) corrisponde un vincolo, il cui valore è riportato in coda
+# una lettera minuscola corrisponde un aiuto, il cui valore è riportato in coda
+
+*---*---*
+|AaB|   |
+|CAB|   |
+*---*---*
+|C  |   |
+|   |   |
+*---*---*
+|   |   |
+| 5 |   |
+*---*---*
+
+A=13
+B=6
+C=3
+D=8
+E=12
+F=6
+G=10
+H=7
+I=7
+L=5
+M=10
+N=7
+O=14
+P=3
+Q=5
+R=10
+a=3
+e=4
+o=5
+r=5
