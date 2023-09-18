@@ -7,6 +7,18 @@
     "kendoku_fail": {
       "commandName": "Project",
       "commandLineArgs": "Samples/sample_fail.txt"
+    },
+    "kendoku_2": {
+      "commandName": "Project",
+      "commandLineArgs": "Samples/sample2.txt"
+    },
+    "kendoku_3": {
+      "commandName": "Project",
+      "commandLineArgs": "Samples/sample3.txt"
+    },
+    "kendoku_4": {
+      "commandName": "Project",
+      "commandLineArgs": "Samples/sample4.txt"
     }
   }
 }
