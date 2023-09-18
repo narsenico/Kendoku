@@ -41,7 +41,7 @@ Console.WriteLine($"Time: {time}");
 Console.WriteLine();
 Console.WriteLine("Last result:");
 //Console.WriteLine(cells.ToHumanString());
-PrintResult(cells);
+PrintResult(cells, matrixSettings);
 
 /********************************/
 
@@ -131,10 +131,10 @@ string[] ParseArgs(string[] args)
     return args;
 }
 
-void PrintResult(IEnumerable<CellStatus> cells)
+void PrintResult(IEnumerable<CellStatus> cells, MatrixSettings matrixSettings)
 {
     var converter = new CellsToStringConverter();
-    Console.WriteLine(converter.ConvertToString(cells));
+    Console.WriteLine(converter.ConvertToString(cells, matrixSettings));
 }
 
 (bool, TimeSpan) ResolveWithTime(IResolver resolver,
