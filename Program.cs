@@ -109,7 +109,7 @@ bool PrintUsage(string[] args)
 
 bool PrintHelp(string[] args)
 {
-    if (args.Contains("-h") || args.Contains("--help")) 
+    if (args.Contains("-h") || args.Contains("--help"))
     {
         Console.WriteLine($"Usage: {System.AppDomain.CurrentDomain.FriendlyName} <filename>");
         Console.WriteLine("Resolve Kendoku game");
@@ -135,6 +135,16 @@ void PrintResult(IEnumerable<CellStatus> cells, MatrixSettings matrixSettings)
 {
     var converter = new CellsToStringConverter();
     Console.WriteLine(converter.ConvertToString(cells, matrixSettings));
+
+    var notResolvedCells = cells.ExcludeResolved();
+    if (notResolvedCells.Any())
+    {
+        Console.WriteLine("Not resolved cells:");
+        foreach (var notResolvedCell in cells.ExcludeResolved())
+        {
+            Console.WriteLine(notResolvedCell.ToHumanString());
+        }
+    }
 }
 
 (bool, TimeSpan) ResolveWithTime(IResolver resolver,
