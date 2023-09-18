@@ -21,6 +21,6 @@ Dettagli:
 6. reitero da 2 fino a che tutte le celle non sono risolte
 
 ## TODO
-- [ ] Terminare configurazione (da file?)
+- [x] Terminare configurazione (da file)
 - [ ] Migliorare output (errori e messaggistica in generale)
 - [ ] Ottimizzare risoluzione constraint in [SimpleResolverImpl](Implementations/SimpleResolverImpl.cs) che è abominevole
