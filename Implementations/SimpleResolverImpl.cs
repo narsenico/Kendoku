@@ -141,13 +141,25 @@ public class SimpleResolverImpl : IResolver
         var constrainedCells = cells.OnConstarint(constraint)
             .Exclude(cell);
 
-        var otherValues = constrainedCells.Select(c => c.Possibilities.ToArray()).ToArray();
-
-        foreach (var cellValue in cell.Possibilities.ToArray())
+        if (constrainedCells.Any())
         {
-            if (!CheckConstraint(otherValues, cellValue, constraint.Sum))
+            var otherValues = constrainedCells.Select(c => c.Possibilities.ToArray()).ToArray();
+
+            foreach (var cellValue in cell.Possibilities.ToArray())
             {
-                cell.RemovePossibility(cellValue);
+                if (!CheckConstraint(otherValues, cellValue, constraint.Sum))
+                {
+                    cell.RemovePossibility(cellValue);
+                }
+            }
+        }
+        else
+        {
+            // se non ci sono altre celle nel constraint (per errore di configurazione si presume)
+            // controllo solo se la cella può assumere il valore del constraint
+            if (cell.Possibilities.Contains(constraint.Sum))
+            {
+                cell.Resolve(constraint.Sum);
             }
         }
 
