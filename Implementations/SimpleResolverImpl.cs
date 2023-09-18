@@ -103,6 +103,8 @@ public class SimpleResolverImpl : IResolver
             .OnlyResolved()
             .PurgePossibilitiesOf(cell);
 
+        // TODO: se la cella un numero che ha solo lei rispetto alla riga, colonna o gruppo, allora è quello risolutivo
+
 #if DEBUG
         if (cell.IsResolved)
         {
