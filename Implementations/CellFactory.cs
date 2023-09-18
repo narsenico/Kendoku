@@ -14,8 +14,8 @@ public class CellFactory : ICellFactory
 
     public Cell CreateCell(int groupIndex, int row, int col)
     {
-        var groupMatrixRow = groupIndex / _settings.GroupPerMatrixRow;
-        var groupMatrixCol = groupIndex - (groupMatrixRow * _settings.GroupPerMatrixRow);
+        var groupMatrixRow = groupIndex / _settings.MatrixRowSize;
+        var groupMatrixCol = groupIndex - (groupMatrixRow * _settings.MatrixRowSize);
 
         var matrixRow = row + (groupMatrixRow * _settings.RowPerGroup);
         var matrixCol = col + (_settings.GroupRowSize * groupMatrixCol);

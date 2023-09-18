@@ -15,7 +15,7 @@ public static partial class SettingsParser
             GroupCount = args.FirstArgOrDefault("-c")?.ToInt() ?? throw new ArgumentException("Group count (-c) argument not valid"),
             GroupSize = args.FirstArgOrDefault("-s")?.ToInt() ?? throw new ArgumentException("Group size (-s) argument not valid"),
             GroupRowSize = args.FirstArgOrDefault("-r")?.ToInt() ?? throw new ArgumentException("Group row size (-r) argument not valid"),
-            GroupPerMatrixRow = args.FirstArgOrDefault("-m")?.ToInt() ?? throw new ArgumentException("Group per matrix row (-m) argument not valid"),
+            MatrixRowSize = args.FirstArgOrDefault("-m")?.ToInt() ?? throw new ArgumentException("Matrix row size (-m) argument not valid"),
         };
     }
 

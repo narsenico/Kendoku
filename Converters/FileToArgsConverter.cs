@@ -71,7 +71,7 @@ internal partial class FileToArgsConverter
             "-c", matrixSettings.GroupCount.ToString(),
             "-s", matrixSettings.GroupSize.ToString(),
             "-r", matrixSettings.GroupRowSize.ToString(),
-            "-m", matrixSettings.GroupPerMatrixRow.ToString(),
+            "-m", matrixSettings.MatrixRowSize.ToString(),
         };
 
         args.AddRange(relevantCells
@@ -105,7 +105,7 @@ internal partial class FileToArgsConverter
             throw new ConvertionFailedException("Cannot find matrix");
         }
 
-        var groupPerMatrixRow = groups.GroupBy(g => g.Start.Row).Select(g => g.Count()).First();
+        var matrixRowSize = groups.GroupBy(g => g.Start.Row).Select(g => g.Count()).First();
         var groupSize = groups[0].CellCount();
         var groupCount = groups.Length;
         var groupRowSize = groups[0].RowSize();
@@ -117,7 +117,7 @@ internal partial class FileToArgsConverter
         {
             GroupCount = groupCount,
             GroupRowSize = groupRowSize,
-            GroupPerMatrixRow = groupPerMatrixRow,
+            MatrixRowSize = matrixRowSize,
             GroupSize = groupSize,
         };
 
