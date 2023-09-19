@@ -36,6 +36,7 @@ if (resolved && !EnsureMatrixResolved(cells, matrixSettings))
 
 Console.WriteLine();
 Console.WriteLine($"Game is {(resolved ? "resolved!" : "not resolved!")}");
+Console.WriteLine($"Resolved: {cells.OnlyResolved().Count()}/{cells.Count()}");
 Console.WriteLine($"Time: {time}");
 
 Console.WriteLine();
