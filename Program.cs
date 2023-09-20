@@ -115,7 +115,7 @@ bool PrintHelp(string[] args)
 
 string[] ParseArgs(string[] args)
 {
-    if (args.Length == 1)
+    if (args.Length >= 1 && !args[0].StartsWith("-"))
     {
         var converter = new FileToArgsConverter();
         return converter.ConvertToArgs(fileName: args[0]);
