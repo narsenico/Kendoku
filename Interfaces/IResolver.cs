@@ -4,7 +4,7 @@ namespace Kendoku.Interfaces;
 
 public interface IResolver
 {
-    public bool Resolve(CellStatus[] cells,
-                        Constraint[] constraints,
-                        Helper[] helpers);
+    public Result Resolve(CellStatus[] cells,
+                          Constraint[] constraints,
+                          Helper[] helpers);
 }

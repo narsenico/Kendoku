@@ -1,6 +1,6 @@
+using System.Diagnostics;
 using Kendoku.Interfaces;
 using Kendoku.Models;
-
 
 namespace Kendoku.Implementations;
 
@@ -16,25 +16,29 @@ public class SimpleResolverImpl : IResolver
         _hashProvider = hashProvider;
     }
 
-    public bool Resolve(CellStatus[] cells,
-                        Constraint[] constraints,
-                        Helper[] helpers)
+    public Result Resolve(CellStatus[] cells,
+                          Constraint[] constraints,
+                          Helper[] helpers)
     {
+        var stopWatch = Stopwatch.StartNew();
+
         // 1. applico gli aiuti
         // 2. inizio iterazione
         //  - per ogni cella applico regole sudoku
         //  - per ogni cella applico constraint
         //  - se non ci sono state modifiche nello stato della matrice esco (altrimenti loop infinito)
         //  - reitero fino a che tutte le celle non sono risolte
+        var ii = 0;
 
         ApplyHelpers(cells, helpers);
-        _listener.OnEndIteration(0, cells.OnlyResolved().Count());
+        _listener.OnEndIteration(ii, cells.OnlyResolved().Count());
 
         // se dopo ogni iterazione l'hash non cambia significa che non ci sono stati cambiamenti nelle celle
         string hash = _hashProvider.GetHash(cells);
 
-        for (var ii = 1; !cells.IsResolved(); ii++)
+        while (!cells.IsResolved())
         {
+            ++ii;
             ExecIteration(cells, constraints);
 
             var newHash = _hashProvider.GetHash(cells);
@@ -48,7 +52,14 @@ public class SimpleResolverImpl : IResolver
             _listener.OnEndIteration(ii, cells.OnlyResolved().Count());
         }
 
-        return cells.IsResolved();
+        stopWatch.Stop();
+
+        return new Result(
+                Success: cells.IsResolved(),
+                ResolvedCount: cells.OnlyResolved().Count(),
+                TotalCount: cells.Count(),
+                IterationCount: ii + 1,
+                ExecutionTime: stopWatch.Elapsed);
     }
 
     private static void ApplyHelpers(CellStatus[] cells,

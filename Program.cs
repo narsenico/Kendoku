@@ -2,10 +2,7 @@
 
 using Kendoku;
 using Kendoku.Implementations;
-using Kendoku.Interfaces;
 using Kendoku.Models;
-
-using System.Diagnostics;
 
 if (PrintUsage(args) || PrintHelp(args)) return;
 
@@ -27,17 +24,16 @@ var resolver = new SimpleResolverImpl(listener, hashProvider);
 Console.WriteLine();
 Console.WriteLine("Start...");
 
-var (resolved, time) = ResolveWithTime(resolver, cells, constraints, helpers);
+var result = resolver.Resolve(cells, constraints, helpers);
 
-if (resolved && !EnsureMatrixResolved(cells, matrixSettings))
+if (result.Success && !EnsureMatrixResolved(cells, matrixSettings))
 {
     throw new InvalidOperationException("Resolver doesn't tell the truth: game not resolved!");
 }
 
 Console.WriteLine();
-Console.WriteLine($"Game is {(resolved ? "resolved!" : "not resolved!")}");
-Console.WriteLine($"Resolved: {cells.OnlyResolved().Count()}/{cells.Count()}");
-Console.WriteLine($"Time: {time}");
+Console.WriteLine($"Game is {(result.Success ? "resolved!" : "not resolved!")}");
+Console.WriteLine($"{result.ResolvedCount} out of {result.TotalCount} cells resolved in {result.ExecutionTime} ({result.IterationCount} iterations)");
 
 Console.WriteLine();
 Console.WriteLine("Last result:");
@@ -146,15 +142,4 @@ void PrintResult(IEnumerable<CellStatus> cells, MatrixSettings matrixSettings)
             Console.WriteLine(notResolvedCell.ToHumanString());
         }
     }
-}
-
-(bool, TimeSpan) ResolveWithTime(IResolver resolver,
-                                 CellStatus[] cells,
-                                 Constraint[] constraints,
-                                 Helper[] helpers)
-{
-    var stopWatch = Stopwatch.StartNew();
-    var resolved = resolver.Resolve(cells, constraints, helpers);
-    stopWatch.Stop();
-    return (resolved, stopWatch.Elapsed);
 }
