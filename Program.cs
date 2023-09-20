@@ -13,16 +13,11 @@ var constraints = SettingsParser.ParseConstraintsFromArgs(_args, cellFactory);
 var helpers = SettingsParser.ParseHelpersFromArgs(_args, cellFactory);
 var cells = CreateMatrix(cellFactory, matrixSettings);
 
-Console.WriteLine($"Cells {cells.Length}");
-Console.WriteLine(helpers.ToHumanString());
-Console.WriteLine(constraints.ToHumanString());
-
 var listener = new ConsoleEventListener();
 var hashProvider = new HashProvider();
 var resolver = new SimpleResolverImpl(listener, hashProvider);
 
-Console.WriteLine();
-Console.WriteLine("Start...");
+Console.WriteLine($"Playing game with {cells.Length} cells, {helpers.Count()} helpers and {constraints.Count()} constraints...");
 
 var result = resolver.Resolve(cells, constraints, helpers);
 
