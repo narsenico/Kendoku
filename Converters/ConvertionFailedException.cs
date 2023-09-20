@@ -1,4 +1,4 @@
-﻿namespace kendoku.Converters;
+﻿namespace Kendoku.Converters;
 
 internal class ConvertionFailedException : Exception
 {

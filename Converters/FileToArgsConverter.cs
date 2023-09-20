@@ -1,11 +1,9 @@
-﻿using Kendoku;
-
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 using KeyValuePairs = System.Collections.Generic.Dictionary<char, int>;
 using Lines = System.Collections.Generic.List<string>;
 
-namespace kendoku.Converters;
+namespace Kendoku.Converters;
 
 /// <summary>
 /// 

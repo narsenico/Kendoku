@@ -1,6 +1,5 @@
-﻿using kendoku.Converters;
-
-using Kendoku;
+﻿using Kendoku;
+using Kendoku.Converters;
 using Kendoku.Implementations;
 using Kendoku.Interfaces;
 using Kendoku.Models;

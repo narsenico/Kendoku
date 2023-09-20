@@ -1,9 +1,8 @@
-﻿using Kendoku;
-using Kendoku.Models;
+﻿using Kendoku.Models;
 
 using System.Text;
 
-namespace kendoku.Converters;
+namespace Kendoku.Converters;
 
 internal class CellsToStringConverter
 {
