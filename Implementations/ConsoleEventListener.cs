@@ -6,14 +6,18 @@ namespace Kendoku.Implementations;
 public class ConsoleEventListener : IEventListener
 {
     private readonly IFormatter _actorFormatter;
+    private readonly bool _verbose;
 
-    public ConsoleEventListener(IFormatter actorFormatter)
+    public ConsoleEventListener(IFormatter actorFormatter,
+                                bool verbose)
     {
         _actorFormatter = actorFormatter;
+        _verbose = verbose;
     }
 
     public void OnCellResolved(Cell cell, object actor)
     {
+        if (!_verbose) return;
         Console.WriteLine($"Cell {cell} resolved with {_actorFormatter.Format(actor)}");
     }
 

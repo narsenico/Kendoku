@@ -2,7 +2,7 @@
   "profiles": {
     "kendoku": {
       "commandName": "Project",
-      "commandLineArgs": "Samples/sample1.txt"
+      "commandLineArgs": "Samples/sample1.txt --verbose"
     },
     "kendoku_fail": {
       "commandName": "Project",

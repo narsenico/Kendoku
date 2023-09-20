@@ -2,20 +2,20 @@
 
 using Kendoku;
 using Kendoku.Implementations;
+using Kendoku.Interfaces;
 using Kendoku.Models;
 
 if (PrintUsage(args) || PrintHelp(args)) return;
 
-var _args = ParseArgs(args);
-var matrixSettings = SettingsParser.ParseMatrixSettingsFromArgs(_args);
+var gameArgs = ParseGameArgs(args);
+var matrixSettings = SettingsParser.ParseMatrixSettingsFromArgs(gameArgs);
 var cellFactory = new CellFactory(matrixSettings);
-var constraints = SettingsParser.ParseConstraintsFromArgs(_args, cellFactory);
-var helpers = SettingsParser.ParseHelpersFromArgs(_args, cellFactory);
+var constraints = SettingsParser.ParseConstraintsFromArgs(gameArgs, cellFactory);
+var helpers = SettingsParser.ParseHelpersFromArgs(gameArgs, cellFactory);
 var cells = CreateMatrix(cellFactory, matrixSettings);
 
-var actorFormatter = new DefaultActorFormatter();
-var listener = new ConsoleEventListener(actorFormatter);
 var hashProvider = new HashProvider();
+var listener = CreateEventListener(args);
 var resolver = new SimpleResolverImpl(listener, hashProvider);
 
 Console.WriteLine($"Playing game with {cells.Length} cells, {helpers.Count()} helpers and {constraints.Count()} constraints...");
@@ -113,7 +113,7 @@ bool PrintHelp(string[] args)
     return false;
 }
 
-string[] ParseArgs(string[] args)
+string[] ParseGameArgs(string[] args)
 {
     if (args.Length >= 1 && !args[0].StartsWith("-"))
     {
@@ -122,6 +122,14 @@ string[] ParseArgs(string[] args)
     }
 
     return args;
+}
+
+IEventListener CreateEventListener(string[] args)
+{
+    var verbose = args.Contains("--verbose");
+    var actorFormatter = new DefaultActorFormatter();
+    var listener = new ConsoleEventListener(actorFormatter, verbose);
+    return listener;
 }
 
 void PrintResult(IEnumerable<CellStatus> cells, MatrixSettings matrixSettings)

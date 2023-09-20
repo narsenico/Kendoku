@@ -55,7 +55,7 @@ public static class Extensions
 
     public static string? FirstArgOrDefault(this string[] args, string name)
     {
-        for (var ii = 0; ii < args.Length; ii += 2)
+        for (var ii = 0; ii < args.Length; ii++)
         {
             if (args[ii] == name)
             {
@@ -75,7 +75,7 @@ public static class Extensions
 
     public static IEnumerable<string> FindArgs(this string[] args, string name)
     {
-        for (var ii = 0; ii < args.Length; ii += 2)
+        for (var ii = 0; ii < args.Length; ii++)
         {
             if (args[ii] == name)
             {
