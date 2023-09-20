@@ -1,5 +1,9 @@
 {
   "profiles": {
+    "help": {
+      "commandName": "Project",
+      "commandLineArgs": "-h"
+    },
     "kendoku": {
       "commandName": "Project",
       "commandLineArgs": "Samples/sample1.txt --verbose"

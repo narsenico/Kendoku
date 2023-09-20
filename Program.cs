@@ -32,7 +32,7 @@ Console.WriteLine($"{result.ResolvedCount} out of {result.TotalCount} cells reso
 
 Console.WriteLine();
 Console.WriteLine("Last result:");
-//Console.WriteLine(cells.ToHumanString());
+
 PrintResult(cells, matrixSettings);
 
 /********************************/
@@ -92,7 +92,7 @@ bool PrintUsage(string[] args)
 {
     if (args.Length == 0)
     {
-        Console.WriteLine($"Usage: {System.AppDomain.CurrentDomain.FriendlyName} <filename>");
+        Console.WriteLine($"Usage: {System.AppDomain.CurrentDomain.FriendlyName} <filename> [--verbose]");
         return true;
     }
 
@@ -105,6 +105,10 @@ bool PrintHelp(string[] args)
     {
         Console.WriteLine($"Usage: {System.AppDomain.CurrentDomain.FriendlyName} <filename>");
         Console.WriteLine("Resolve Kendoku game");
+        Console.WriteLine(@"
+Options:
+--verbose    Print extended logs
+");
         // TODO: stampare help formato file
         return true;
     }
