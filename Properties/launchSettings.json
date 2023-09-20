@@ -6,7 +6,7 @@
     },
     "kendoku": {
       "commandName": "Project",
-      "commandLineArgs": "Samples/sample1.txt --verbose"
+      "commandLineArgs": "Samples/sample1.txt"
     },
     "kendoku_fail": {
       "commandName": "Project",
@@ -18,7 +18,7 @@
     },
     "kendoku_3": {
       "commandName": "Project",
-      "commandLineArgs": "Samples/sample3.txt"
+      "commandLineArgs": "Samples/sample3.txt --verbose"
     },
     "kendoku_4": {
       "commandName": "Project",

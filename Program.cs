@@ -6,6 +6,7 @@ using Kendoku.Models;
 
 if (PrintUsage(args) || PrintHelp(args)) return;
 
+var verbose = args.Contains("--verbose");
 var gameArgs = ParseGameArgs(args);
 var matrixSettings = SettingsParser.ParseMatrixSettingsFromArgs(gameArgs);
 var cellFactory = new CellFactory(matrixSettings);
@@ -14,7 +15,7 @@ var helpers = SettingsParser.ParseHelpersFromArgs(gameArgs, cellFactory);
 var cells = CreateMatrix(cellFactory, matrixSettings);
 
 var hashProvider = new HashProvider();
-var listener = CreateEventListener(args);
+var listener = CreateEventListener(verbose);
 var resolver = new SimpleResolverImpl(listener, hashProvider);
 
 Console.WriteLine($"Playing game with {cells.Length} cells, {helpers.Count()} helpers and {constraints.Count()} constraints...");
@@ -26,14 +27,7 @@ if (result.Success && !EnsureMatrixResolved(cells, matrixSettings))
     throw new InvalidOperationException("Resolver doesn't tell the truth: game not resolved!");
 }
 
-Console.WriteLine();
-Console.WriteLine($"Game is {(result.Success ? "resolved!" : "not resolved!")}");
-Console.WriteLine($"{result.ResolvedCount} out of {result.TotalCount} cells resolved in {result.ExecutionTime} ({result.IterationCount} iterations)");
-
-Console.WriteLine();
-Console.WriteLine("Last result:");
-
-PrintResult(cells, matrixSettings);
+PrintResult(result, cells, matrixSettings, verbose);
 
 /********************************/
 
@@ -127,26 +121,38 @@ string[] ParseGameArgs(string[] args)
     return args;
 }
 
-IEventListener CreateEventListener(string[] args)
+IEventListener CreateEventListener(bool verbose)
 {
-    var verbose = args.Contains("--verbose");
     var actorFormatter = new DefaultActorFormatter();
     var listener = new ConsoleEventListener(actorFormatter, verbose);
     return listener;
 }
 
-void PrintResult(IEnumerable<CellStatus> cells, MatrixSettings matrixSettings)
+void PrintResult(Result result,
+                 IEnumerable<CellStatus> cells,
+                 MatrixSettings matrixSettings,
+                 bool versbose)
 {
+    Console.WriteLine();
+    Console.WriteLine($"Game is {(result.Success ? "resolved!" : "not resolved! (use --verbose options for more details)")}");
+    Console.WriteLine($"{result.ResolvedCount} out of {result.TotalCount} cells resolved in {result.ExecutionTime} ({result.IterationCount} iterations)");
+
+    Console.WriteLine();
+    Console.WriteLine("Last result:");
+
     var converter = new CellsToStringConverter();
     Console.WriteLine(converter.ConvertToString(cells, matrixSettings));
 
-    var notResolvedCells = cells.ExcludeResolved();
-    if (notResolvedCells.Any())
+    if (verbose)
     {
-        Console.WriteLine("Not resolved cells:");
-        foreach (var notResolvedCell in cells.ExcludeResolved())
+        var notResolvedCells = cells.ExcludeResolved();
+        if (notResolvedCells.Any())
         {
-            Console.WriteLine(notResolvedCell.ToHumanString());
+            Console.WriteLine("Not resolved cells:");
+            foreach (var notResolvedCell in cells.ExcludeResolved())
+            {
+                Console.WriteLine(notResolvedCell.ToHumanString());
+            }
         }
     }
 }
