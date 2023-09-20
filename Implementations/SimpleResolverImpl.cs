@@ -126,7 +126,10 @@ public class SimpleResolverImpl : IResolver
             .SelectMany(c => c.Possibilities)
             .MantainUniqueValueIn(cell);
 
-        _listener.OnCellResolved(cell.Cell, "sudoku ruels");
+        if (cell.IsResolved)
+        {
+            _listener.OnCellResolved(cell.Cell, "sudoku ruels");
+        }
     }
 
     private void ApplyConstrainsts(CellStatus cell,
@@ -181,7 +184,10 @@ public class SimpleResolverImpl : IResolver
             }
         }
 
-        _listener.OnCellResolved(cell.Cell, constraint);
+        if (cell.IsResolved)
+        {
+            _listener.OnCellResolved(cell.Cell, constraint);
+        }
     }
 
     private static bool CheckConstraint(int[][] values, int initialValue, int check)
