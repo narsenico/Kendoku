@@ -62,24 +62,19 @@ public class SimpleResolverImpl : IResolver
                 ExecutionTime: stopWatch.Elapsed);
     }
 
-    private static void ApplyHelpers(CellStatus[] cells,
-                                     Helper[] helpers)
+    private void ApplyHelpers(CellStatus[] cells,
+                              Helper[] helpers)
     {
         foreach (var help in helpers)
         {
             var cell = cells.Find(help);
             cell.Resolve(help.Value);
 
-#if DEBUG
-            if (cell.IsResolved)
-            {
-                Console.WriteLine($"Resolved with {help.ToHumanString()} => {cell.ToHumanString()}");
-            }
-#endif
+            _listener.OnCellResolved(cell.Cell, help);
         }
     }
 
-    private static void ExecIteration(CellStatus[] cells,
+    private void ExecIteration(CellStatus[] cells,
                                       Constraint[] constraints)
     {
         foreach (var cell in cells.ExcludeResolved())
@@ -93,8 +88,8 @@ public class SimpleResolverImpl : IResolver
         }
     }
 
-    private static void ApplySudokuRules(CellStatus cell,
-                                         CellStatus[] cells)
+    private void ApplySudokuRules(CellStatus cell,
+                                  CellStatus[] cells)
     {
         // 1. rimuovo i numeri già usati sulla stessa riga della matrice
         cells.OnSameMatrixRowOf(cell)
@@ -131,17 +126,12 @@ public class SimpleResolverImpl : IResolver
             .SelectMany(c => c.Possibilities)
             .MantainUniqueValueIn(cell);
 
-#if DEBUG
-        if (cell.IsResolved)
-        {
-            Console.WriteLine($"Resolved with sudoku rules => {cell.ToHumanString()}");
-        }
-#endif
+        _listener.OnCellResolved(cell.Cell, "sudoku ruels");
     }
 
-    private static void ApplyConstrainsts(CellStatus cell,
-                                          CellStatus[] cells,
-                                          Constraint[] constraints)
+    private void ApplyConstrainsts(CellStatus cell,
+                                   CellStatus[] cells,
+                                   Constraint[] constraints)
     {
         foreach (var constraint in constraints.FilterBy(cell))
         {
@@ -149,9 +139,9 @@ public class SimpleResolverImpl : IResolver
         }
     }
 
-    private static void ApplyConstrainst(CellStatus cell,
-                                         CellStatus[] cells,
-                                         Constraint constraint)
+    private void ApplyConstrainst(CellStatus cell,
+                                  CellStatus[] cells,
+                                  Constraint constraint)
     {
         // escludo quei valori che non possono risolvere il constraint
         //  quindi se un valore sommato a qualsiasi altro valore delle altre celle non risolve il constraint va scartato
@@ -191,12 +181,7 @@ public class SimpleResolverImpl : IResolver
             }
         }
 
-#if DEBUG
-        if (cell.IsResolved)
-        {
-            Console.WriteLine($"Resolved with {constraint.ToHumanString()} => {cell.ToHumanString()}");
-        }
-#endif
+        _listener.OnCellResolved(cell.Cell, constraint);
     }
 
     private static bool CheckConstraint(int[][] values, int initialValue, int check)

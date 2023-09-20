@@ -13,7 +13,8 @@ var constraints = SettingsParser.ParseConstraintsFromArgs(_args, cellFactory);
 var helpers = SettingsParser.ParseHelpersFromArgs(_args, cellFactory);
 var cells = CreateMatrix(cellFactory, matrixSettings);
 
-var listener = new ConsoleEventListener();
+var actorFormatter = new DefaultActorFormatter();
+var listener = new ConsoleEventListener(actorFormatter);
 var hashProvider = new HashProvider();
 var resolver = new SimpleResolverImpl(listener, hashProvider);
 
