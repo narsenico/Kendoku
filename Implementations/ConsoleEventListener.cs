@@ -9,8 +9,8 @@ public class ConsoleEventListener : IEventListener
         Console.WriteLine($"End iteration #{iteration}: resolved={cellResolvedCount}");
     }
 
-    public void OnNothingChanged()
+    public void OnNothingChanged(int iteration)
     {
-        Console.WriteLine("Noting changed from previous iteration");
+        Console.WriteLine($"End iteration #{iteration}: noting changed from previous iteration");
     }
 }

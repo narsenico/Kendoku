@@ -44,7 +44,7 @@ public class SimpleResolverImpl : IResolver
             var newHash = _hashProvider.GetHash(cells);
             if (newHash == hash)
             {
-                _listener.OnNothingChanged();
+                _listener.OnNothingChanged(ii);
                 break;
             }
 
