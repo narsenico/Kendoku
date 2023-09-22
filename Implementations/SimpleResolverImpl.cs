@@ -16,9 +16,21 @@ public class SimpleResolverImpl : IResolver
         _hashProvider = hashProvider;
     }
 
-    public Result Resolve(CellStatus[] cells,
+    public Result Resolve(Cell[] cells,
+                          MatrixSettings settings,
                           Constraint[] constraints,
                           Helper[] helpers)
+    {
+        var possibilities = settings.GetPossibilities().ToArray();
+        var cs = cells.Select(cell => new CellStatus(cell, possibilities)).ToArray();
+
+        return Resolve(cs, settings, constraints, helpers);
+    }
+
+    private Result Resolve(CellStatus[] cells,
+                           MatrixSettings settings,
+                           Constraint[] constraints,
+                           Helper[] helpers)
     {
         var stopWatch = Stopwatch.StartNew();
 
@@ -56,8 +68,7 @@ public class SimpleResolverImpl : IResolver
 
         return new Result(
                 Success: cells.IsResolved(),
-                ResolvedCount: cells.OnlyResolved().Count(),
-                TotalCount: cells.Count(),
+                Cells: cells,
                 IterationCount: ii + 1,
                 ExecutionTime: stopWatch.Elapsed);
     }

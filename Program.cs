@@ -20,25 +20,22 @@ var resolver = new SimpleResolverImpl(listener, hashProvider);
 
 Console.WriteLine($"Playing game with {cells.Length} cells, {helpers.Count()} helpers and {constraints.Count()} constraints...");
 
-var result = resolver.Resolve(cells, constraints, helpers);
+var result = resolver.Resolve(cells, matrixSettings, constraints, helpers);
 
-if (result.Success && !EnsureMatrixResolved(cells, matrixSettings))
+if (result.Success && !EnsureMatrixResolved(result.Cells, matrixSettings))
 {
     throw new InvalidOperationException("Resolver doesn't tell the truth: game not resolved!");
 }
 
-PrintResult(result, cells, matrixSettings, verbose);
+PrintResult(result, matrixSettings, verbose);
 
 /********************************/
 
-CellStatus[] CreateMatrix(CellFactory factory, MatrixSettings settings)
+Cell[] CreateMatrix(CellFactory factory, MatrixSettings settings)
 {
-    var possibilities = settings.GetPossibilities().ToArray();
-
     return Enumerable.Range(0, settings.GroupCount)
-      .SelectMany(groupIndex => factory.CreateGroupCells(groupIndex))
-      .Select(cell => new CellStatus(cell, possibilities))
-      .ToArray();
+        .SelectMany(groupIndex => factory.CreateGroupCells(groupIndex))
+        .ToArray();
 }
 
 bool EnsureMatrixResolved(IEnumerable<CellStatus> cells, MatrixSettings settings)
@@ -129,7 +126,6 @@ IEventListener CreateEventListener(bool verbose)
 }
 
 void PrintResult(Result result,
-                 IEnumerable<CellStatus> cells,
                  MatrixSettings matrixSettings,
                  bool versbose)
 {
@@ -141,15 +137,15 @@ void PrintResult(Result result,
     Console.WriteLine("Last result:");
 
     var converter = new CellsToStringConverter();
-    Console.WriteLine(converter.ConvertToString(cells, matrixSettings));
+    Console.WriteLine(converter.ConvertToString(result.Cells, matrixSettings));
 
     if (verbose)
     {
-        var notResolvedCells = cells.ExcludeResolved();
+        var notResolvedCells = result.Cells.ExcludeResolved();
         if (notResolvedCells.Any())
         {
             Console.WriteLine("Not resolved cells:");
-            foreach (var notResolvedCell in cells.ExcludeResolved())
+            foreach (var notResolvedCell in result.Cells.ExcludeResolved())
             {
                 Console.WriteLine(notResolvedCell.ToHumanString());
             }

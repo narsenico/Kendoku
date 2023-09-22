@@ -1,7 +1,12 @@
+using Kendoku.Implementations;
+
 namespace Kendoku.Models;
 
 public record Result(bool Success,
-                     int ResolvedCount,
-                     int TotalCount,
+                     CellStatus[] Cells,
                      int IterationCount,
-                     TimeSpan ExecutionTime);
+                     TimeSpan ExecutionTime)
+{
+    public int ResolvedCount => Cells.OnlyResolved().Count();
+    public int TotalCount => Cells.Count();
+}

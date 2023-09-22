@@ -90,4 +90,10 @@ public static class Extensions
         }
         return cell;
     }
+
+    public static CellStatus Clone(this CellStatus cell) => 
+        new(cell.Cell, cell.Possibilities.ToArray());
+
+    public static IEnumerable<CellStatus> Clone(this IEnumerable<CellStatus> cells) =>
+        cells.Select(c => c.Clone());
 }
