@@ -19,8 +19,7 @@ public class CellFactory : ICellFactory
 
         var matrixRow = row + (groupMatrixRow * _settings.RowPerGroup);
         var matrixCol = col + (_settings.GroupRowSize * groupMatrixCol);
-        // var cellIndex = groupRowSize * row + col;
-        //Console.WriteLine($"G{groupIndex} R{row} C{col} GMR{groupMatrixRow} MR{matrixRow} GMC{groupMatrixCol} MC{matrixCol}");
+
         return new Cell(groupIndex, row, col, matrixRow, matrixCol);
     }
 

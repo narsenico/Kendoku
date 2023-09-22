@@ -24,11 +24,10 @@ public class SimpleResolverImpl : IResolver
         var possibilities = settings.GetPossibilities().ToArray();
         var cs = cells.Select(cell => new CellStatus(cell, possibilities)).ToArray();
 
-        return Resolve(cs, settings, constraints, helpers);
+        return Resolve(cs, constraints, helpers);
     }
 
     private Result Resolve(CellStatus[] cells,
-                           MatrixSettings settings,
                            Constraint[] constraints,
                            Helper[] helpers)
     {
