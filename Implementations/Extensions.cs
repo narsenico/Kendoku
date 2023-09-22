@@ -91,7 +91,12 @@ public static class Extensions
         return cell;
     }
 
-    public static CellStatus Clone(this CellStatus cell) => 
+    public static bool ContainsAllValues(this IEnumerable<CellStatus> cells, IEnumerable<int> values)
+    {
+        return cells.Values().Order().SequenceEqual(values);
+    }
+
+    public static CellStatus Clone(this CellStatus cell) =>
         new(cell.Cell, cell.Possibilities.ToArray());
 
     public static IEnumerable<CellStatus> Clone(this IEnumerable<CellStatus> cells) =>

@@ -43,15 +43,15 @@ bool EnsureMatrixResolved(IEnumerable<CellStatus> cells, MatrixSettings settings
     var possibilities = settings.GetPossibilities().Order().ToArray();
 
     var notResolvedGroups = cells.GroupBy(c => c.Cell.GroupIndex)
-        .Where(group => !EnsureUniqueValues(group, possibilities))
+        .Where(group => !group.ContainsAllValues(possibilities))
         .Select(group => group.Key);
 
     var notResolvedRows = cells.GroupBy(c => c.Cell.MatrixRow)
-        .Where(group => !EnsureUniqueValues(group, possibilities))
+        .Where(group => !group.ContainsAllValues(possibilities))
         .Select(group => group.Key);
 
     var notResolvedCols = cells.GroupBy(c => c.Cell.MatrixCol)
-        .Where(group => !EnsureUniqueValues(group, possibilities))
+        .Where(group => !group.ContainsAllValues(possibilities))
         .Select(group => group.Key);
 
     foreach (var g in notResolvedGroups)
@@ -72,11 +72,6 @@ bool EnsureMatrixResolved(IEnumerable<CellStatus> cells, MatrixSettings settings
     return !notResolvedGroups.Any()
         && !notResolvedRows.Any()
         && !notResolvedCols.Any();
-}
-
-bool EnsureUniqueValues(IEnumerable<CellStatus> cells, int[] possibilities)
-{
-    return cells.Values().Order().SequenceEqual(possibilities);
 }
 
 bool PrintUsage(string[] args)
