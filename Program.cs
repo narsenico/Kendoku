@@ -132,7 +132,7 @@ void PrintResult(Result result,
     Console.WriteLine("Last result:");
 
     var converter = new CellsToStringConverter();
-    Console.WriteLine(converter.ConvertToString(result.Cells, matrixSettings));
+    Console.WriteLine(converter.Export(matrixSettings, result));
 
     if (verbose)
     {

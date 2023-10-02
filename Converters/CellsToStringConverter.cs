@@ -1,22 +1,22 @@
-﻿using Kendoku.Models;
+﻿using Kendoku.Interfaces;
+using Kendoku.Models;
 
 using System.Text;
 
 namespace Kendoku.Converters;
 
-internal class CellsToStringConverter
+internal class CellsToStringConverter : IExporter
 {
     private const char CORNER = '*';
     private const char FLOOR = '-';
     private const char WALL = '|';
 
-    public string ConvertToString(IEnumerable<CellStatus> cells,
-                                  MatrixSettings matrixSettings)
+    public string Export(MatrixSettings matrixSettings, Result result)
     {
         var matrixRowSize = matrixSettings.MatrixRowSize;
         var groupRowSize = matrixSettings.GroupRowSize;
 
-        var buff = cells.GroupBy(cell => CalcMatrixRow(cell, matrixRowSize))
+        var buff = result.Cells.GroupBy(cell => CalcMatrixRow(cell, matrixRowSize))
             .Aggregate(new StringBuilder(), (buff, cells) => AppendGroups(buff, cells, matrixRowSize, groupRowSize));
 
         AppendDivider(buff, matrixRowSize, groupRowSize);
