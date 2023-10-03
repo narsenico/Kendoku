@@ -18,7 +18,7 @@ internal class HtmlExporter : IExporter
     {
         var buff = new StringBuilder();
         buff.AppendLine("<html>");
-        buff = WriterHead(buff, matrixSettings);
+        buff = WriteHead(buff, matrixSettings);
         buff = WriterBody(buff, result);
         buff.Append("</html>");
 
@@ -33,12 +33,13 @@ internal class HtmlExporter : IExporter
             .GroupBy(cell => cell.Cell.GroupIndex)
             .OrderBy(g => g.Key)
             .Aggregate(buff, WriteGroup);
-        buff.AppendLine("</div>")
-            .AppendLine("</body>");
+        buff.AppendLine("</div>");
+        WriteScript(buff);
+        buff.AppendLine("</body>");
         return buff;
     }
 
-    private StringBuilder WriterHead(StringBuilder buff, MatrixSettings matrixSettings)
+    private StringBuilder WriteHead(StringBuilder buff, MatrixSettings matrixSettings)
     {
         buff.AppendLine("<head>");
         buff.AppendLine("<style>");
@@ -75,11 +76,14 @@ internal class HtmlExporter : IExporter
                 flex-wrap: wrap;
                 align-items: center;
                 justify-content: center;
-                padding: 2px;
             }}
             .cell.resolved > div {{
                 font-size: 2rem;
-            }}
+                height: calc(var(--cell-size) - 4px);
+                width: calc(var(--cell-size) - 4px);
+                line-height: var(--cell-size);
+                text-align: center;
+            }} 
            .cell:not(.resolved) > div {{
                 border: solid 1px #7e8e96;
                 border-radius: 50%;
@@ -88,10 +92,41 @@ internal class HtmlExporter : IExporter
                 margin: 0 1px;
                 font-weight: bold;
             }}
+           .cell>div.sel {{
+                background: #FFC107;
+           }}
             ");
 
         buff.AppendLine("</style>");
         buff.AppendLine("</head>");
+        return buff;
+    }
+
+
+    private StringBuilder WriteScript(StringBuilder buff)
+    {
+        buff.AppendLine("<script>");
+        buff.AppendLine("""
+            function addHighlight(num) {{
+                for (let cell of [...document.querySelectorAll(`.cell>div`)].filter(c => c.innerText == num)) {{
+                    cell.classList.add('sel');
+                }}
+            }}
+            function clearHighlight() {{
+                for (let cell of [...document.querySelectorAll(`.cell>div`)]) {{
+                    cell.classList.remove('sel');
+                }}
+            }}
+            document.querySelectorAll('.cell>div').forEach(c => c.addEventListener('mouseenter', e => {{
+                clearHighlight();
+                addHighlight(e.target.innerText);
+            }}));            
+            document.querySelectorAll('.cell>div').forEach(c => c.addEventListener('mouseout', e => {{
+                clearHighlight();
+            }}));            
+
+        """);
+        buff.AppendLine("</script>");
         return buff;
     }
 
