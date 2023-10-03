@@ -118,6 +118,8 @@ IExporter CreateExporter(string? exporterType, bool verbose)
 {
     switch (exporterType)
     {
+        case string name when name.EndsWith(".html"):
+            return new HtmlExporter(name);
         default:
             return new SimpleExporter(verbose);
     }
