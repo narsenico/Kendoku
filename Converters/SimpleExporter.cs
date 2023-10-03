@@ -1,25 +1,57 @@
-﻿using Kendoku.Interfaces;
+﻿using Kendoku.Implementations;
+using Kendoku.Interfaces;
 using Kendoku.Models;
 
 using System.Text;
 
 namespace Kendoku.Converters;
 
-internal class CellsToStringConverter : IExporter
+internal class SimpleExporter : IExporter
 {
     private const char CORNER = '*';
     private const char FLOOR = '-';
     private const char WALL = '|';
 
+    private readonly bool _verbose;
+
+    public SimpleExporter(bool verbose)
+    {
+        _verbose = verbose;
+    }
+
     public string Export(MatrixSettings matrixSettings, Result result)
     {
+        var buff = new StringBuilder();
+        buff.Append($"Game is {(result.Success ? "resolved!" : "not resolved! (use --verbose options for more details)")}");
+        buff.Append($"{result.ResolvedCount} out of {result.TotalCount} cells resolved in {result.ExecutionTime} ({result.IterationCount} iterations)");
+
+        buff.AppendLine();
+        buff.AppendLine("Last result:");
+        buff.AppendLine();
+
         var matrixRowSize = matrixSettings.MatrixRowSize;
         var groupRowSize = matrixSettings.GroupRowSize;
 
-        var buff = result.Cells.GroupBy(cell => CalcMatrixRow(cell, matrixRowSize))
-            .Aggregate(new StringBuilder(), (buff, cells) => AppendGroups(buff, cells, matrixRowSize, groupRowSize));
+        buff = result.Cells.GroupBy(cell => CalcMatrixRow(cell, matrixRowSize))
+            .Aggregate(buff, (buff, cells) => AppendGroups(buff, cells, matrixRowSize, groupRowSize));
 
         AppendDivider(buff, matrixRowSize, groupRowSize);
+
+        if (_verbose)
+        {
+            buff.AppendLine();
+
+            var notResolvedCells = result.Cells.ExcludeResolved();
+            if (notResolvedCells.Any())
+            {
+                buff.AppendLine("Not resolved cells:");
+                foreach (var notResolvedCell in result.Cells.ExcludeResolved())
+                {
+                    buff.AppendLine(notResolvedCell.ToHumanString());
+                }
+            }
+        }
+
         return buff.ToString();
     }
 

@@ -27,7 +27,8 @@ if (result.Success && !EnsureMatrixResolved(result.Cells, matrixSettings))
     throw new InvalidOperationException("Resolver doesn't tell the truth: game not resolved!");
 }
 
-PrintResult(result, matrixSettings, verbose);
+var exporter = CreateExporter(args.FirstArgOrDefault("-O"), verbose);
+Console.WriteLine(exporter.Export(matrixSettings, result));
 
 /********************************/
 
@@ -113,37 +114,17 @@ string[] ParseGameArgs(string[] args)
     return args;
 }
 
+IExporter CreateExporter(string? exporterType, bool verbose)
+{
+    return exporterType switch
+    {
+        _ => new SimpleExporter(verbose)
+    };
+}
+
 IEventListener CreateEventListener(bool verbose)
 {
     var actorFormatter = new DefaultActorFormatter();
     var listener = new ConsoleEventListener(actorFormatter, verbose);
     return listener;
-}
-
-void PrintResult(Result result,
-                 MatrixSettings matrixSettings,
-                 bool versbose)
-{
-    Console.WriteLine();
-    Console.WriteLine($"Game is {(result.Success ? "resolved!" : "not resolved! (use --verbose options for more details)")}");
-    Console.WriteLine($"{result.ResolvedCount} out of {result.TotalCount} cells resolved in {result.ExecutionTime} ({result.IterationCount} iterations)");
-
-    Console.WriteLine();
-    Console.WriteLine("Last result:");
-
-    var converter = new CellsToStringConverter();
-    Console.WriteLine(converter.Export(matrixSettings, result));
-
-    if (verbose)
-    {
-        var notResolvedCells = result.Cells.ExcludeResolved();
-        if (notResolvedCells.Any())
-        {
-            Console.WriteLine("Not resolved cells:");
-            foreach (var notResolvedCell in result.Cells.ExcludeResolved())
-            {
-                Console.WriteLine(notResolvedCell.ToHumanString());
-            }
-        }
-    }
 }
