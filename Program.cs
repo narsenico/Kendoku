@@ -28,7 +28,7 @@ if (result.Success && !EnsureMatrixResolved(result.Cells, matrixSettings))
 }
 
 var exporter = CreateExporter(args.FirstArgOrDefault("-O"), verbose);
-Console.WriteLine(exporter.Export(matrixSettings, result));
+exporter.Export(matrixSettings, result);
 
 /********************************/
 
@@ -116,10 +116,11 @@ string[] ParseGameArgs(string[] args)
 
 IExporter CreateExporter(string? exporterType, bool verbose)
 {
-    return exporterType switch
+    switch (exporterType)
     {
-        _ => new SimpleExporter(verbose)
-    };
+        default:
+            return new SimpleExporter(verbose);
+    }
 }
 
 IEventListener CreateEventListener(bool verbose)

@@ -19,7 +19,7 @@ internal class SimpleExporter : IExporter
         _verbose = verbose;
     }
 
-    public string Export(MatrixSettings matrixSettings, Result result)
+    public void Export(MatrixSettings matrixSettings, Result result)
     {
         var buff = new StringBuilder();
         buff.Append($"Game is {(result.Success ? "resolved!" : "not resolved! (use --verbose options for more details)")}");
@@ -52,7 +52,7 @@ internal class SimpleExporter : IExporter
             }
         }
 
-        return buff.ToString();
+        Console.WriteLine(buff.ToString());
     }
 
     private static int CalcMatrixRow(CellStatus cell, int matrixRowSize)
