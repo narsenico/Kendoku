@@ -17,7 +17,7 @@ var cells = CreateMatrix(cellFactory, matrixSettings);
 
 var hashProvider = new HashProvider();
 var listener = CreateEventListener(verbose);
-var resolver = new SimpleResolverImpl(listener, hashProvider);
+var resolver = new SimpleResolver(listener, hashProvider);
 
 Console.WriteLine($"Playing game with {cells.Length} cells, {helpers.Count()} helpers and {constraints.Count()} constraints...");
 

@@ -3,13 +3,13 @@ using Kendoku.Models;
 
 namespace Kendoku.Implementations;
 
-public class SimpleResolverImpl : IResolver
+public class SimpleResolver : IResolver
 {
     private readonly IEventListener _listener;
     private readonly IHashProvider _hashProvider;
 
-    public SimpleResolverImpl(IEventListener listener,
-                              IHashProvider hashProvider)
+    public SimpleResolver(IEventListener listener,
+                          IHashProvider hashProvider)
     {
         _listener = listener;
         _hashProvider = hashProvider;
