@@ -17,8 +17,7 @@ public class MultiResolver : IResolver
         if (!_resolvers.Any()) throw new InvalidOperationException("Resolvers can not be empty");
     }
 
-    public Result Resolve(Cell[] cells,
-                          MatrixSettings settings,
+    public Result Resolve(CellStatus[] cells,
                           Constraint[] constraints,
                           Helper[] helpers)
     {
@@ -27,7 +26,7 @@ public class MultiResolver : IResolver
 
         foreach (var resolver in _resolvers)
         {
-            var result = resolver.Resolve(cells, settings, constraints, helpers);
+            var result = resolver.Resolve(cells, constraints, helpers);
             last = result;
             totalIterations += result.IterationCount;
             if (result.Success)
@@ -35,15 +34,9 @@ public class MultiResolver : IResolver
                 break;
             }
 
-            helpers = helpers.Concat(ResolvedCellsToHelpers(result.Cells)).ToArray();
+            cells = result.Cells;
         }
 
         return last! with { IterationCount = totalIterations };
-    }
-
-    private static IEnumerable<Helper> ResolvedCellsToHelpers(CellStatus[] cells)
-    {
-        return cells.Where(c => c.IsResolved)
-            .Select(c => new Helper(c.Cell, c.Value));
     }
 }

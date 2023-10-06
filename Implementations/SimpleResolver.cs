@@ -15,20 +15,9 @@ public class SimpleResolver : IResolver
         _hashProvider = hashProvider;
     }
 
-    public Result Resolve(Cell[] cells,
-                          MatrixSettings settings,
+    public Result Resolve(CellStatus[] cells,
                           Constraint[] constraints,
                           Helper[] helpers)
-    {
-        var possibilities = settings.GetPossibilities().ToArray();
-        var cs = cells.Select(cell => new CellStatus(cell, possibilities)).ToArray();
-
-        return Resolve(cs, constraints, helpers);
-    }
-
-    private Result Resolve(CellStatus[] cells,
-                           Constraint[] constraints,
-                           Helper[] helpers)
     {
         // 1. applico gli aiuti
         // 2. inizio iterazione

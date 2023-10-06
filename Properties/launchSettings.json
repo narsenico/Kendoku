@@ -18,6 +18,10 @@
     },
     "kendoku_3": {
       "commandName": "Project",
+      "commandLineArgs": "Samples/sample3.txt --verbose"
+    },
+    "kendoku_3_html": {
+      "commandName": "Project",
       "commandLineArgs": "Samples/sample3.txt --verbose -O out.html"
     },
     "kendoku_4": {

@@ -14,16 +14,20 @@ var cellFactory = new CellFactory(matrixSettings);
 var constraints = SettingsParser.ParseConstraintsFromArgs(gameArgs, cellFactory);
 var helpers = SettingsParser.ParseHelpersFromArgs(gameArgs, cellFactory);
 var cells = CreateMatrix(cellFactory, matrixSettings);
+var possibilities = matrixSettings.GetPossibilities().ToArray();
+var cs = cells.Select(cell => new CellStatus(cell, possibilities)).ToArray();
 
 var hashProvider = new HashProvider();
 var listener = CreateEventListener(verbose);
-var simpleResolver = new SimpleResolver(listener, hashProvider);
-var resolver = new MultiResolver(listener, new[] { simpleResolver });
+var resolvers = new IResolver[] {
+    new SimpleResolver(listener, hashProvider),
+};
+var resolver = new MultiResolver(listener, resolvers);
 
 Console.WriteLine($"Playing game with {cells.Length} cells, {helpers.Count()} helpers and {constraints.Count()} constraints...");
 
 var stopWatch = Stopwatch.StartNew();
-var result = resolver.Resolve(cells, matrixSettings, constraints, helpers);
+var result = resolver.Resolve(cs, constraints, helpers);
 stopWatch.Stop();
 
 if (result.Success && !EnsureMatrixResolved(result.Cells, matrixSettings))
