@@ -9,7 +9,7 @@ public class MultiResolver : IResolver
     private readonly IEnumerable<IResolver> _resolvers;
 
     public MultiResolver(IEventListener listener,
-                          IEnumerable<IResolver> resolvers)
+                         IEnumerable<IResolver> resolvers)
     {
         _listener = listener;
         _resolvers = resolvers;
@@ -23,17 +23,27 @@ public class MultiResolver : IResolver
                           Helper[] helpers)
     {
         Result? last = null;
+        int totalIterations = 0;
 
         foreach (var resolver in _resolvers)
         {
             var result = resolver.Resolve(cells, settings, constraints, helpers);
+            last = result;
+            totalIterations += result.IterationCount;
             if (result.Success)
             {
-                return result;
+                break;
             }
-            last = result;
+
+            helpers = helpers.Concat(ResolvedCellsToHelpers(result.Cells)).ToArray();
         }
 
-        return last!;
+        return last! with { IterationCount = totalIterations };
+    }
+
+    private static IEnumerable<Helper> ResolvedCellsToHelpers(CellStatus[] cells)
+    {
+        return cells.Where(c => c.IsResolved)
+            .Select(c => new Helper(c.Cell, c.Value));
     }
 }
