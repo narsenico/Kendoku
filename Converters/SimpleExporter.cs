@@ -19,11 +19,13 @@ internal class SimpleExporter : IExporter
         _verbose = verbose;
     }
 
-    public void Export(MatrixSettings matrixSettings, Result result)
+    public void Export(MatrixSettings matrixSettings,
+                       Result result,
+                       TimeSpan executionTime)
     {
         var buff = new StringBuilder();
         buff.Append($"Game is {(result.Success ? "resolved!" : "not resolved! (use --verbose options for more details)")}");
-        buff.Append($"{result.ResolvedCount} out of {result.TotalCount} cells resolved in {result.ExecutionTime} ({result.IterationCount} iterations)");
+        buff.Append($"{result.ResolvedCount} out of {result.TotalCount} cells resolved in {executionTime} ({result.IterationCount} iterations)");
 
         buff.AppendLine();
         buff.AppendLine("Last result:");

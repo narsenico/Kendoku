@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Kendoku.Interfaces;
 using Kendoku.Models;
 
@@ -31,8 +30,6 @@ public class SimpleResolverImpl : IResolver
                            Constraint[] constraints,
                            Helper[] helpers)
     {
-        var stopWatch = Stopwatch.StartNew();
-
         // 1. applico gli aiuti
         // 2. inizio iterazione
         //  - per ogni cella applico regole sudoku
@@ -63,13 +60,10 @@ public class SimpleResolverImpl : IResolver
             _listener.OnEndIteration(ii, cells.OnlyResolved().Count());
         }
 
-        stopWatch.Stop();
-
         return new Result(
                 Success: cells.IsResolved(),
                 Cells: cells,
-                IterationCount: ii + 1,
-                ExecutionTime: stopWatch.Elapsed);
+                IterationCount: ii + 1);
     }
 
     private void ApplyHelpers(CellStatus[] cells,

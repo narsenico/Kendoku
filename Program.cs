@@ -1,4 +1,5 @@
-﻿using Kendoku;
+﻿using System.Diagnostics;
+using Kendoku;
 using Kendoku.Converters;
 using Kendoku.Implementations;
 using Kendoku.Interfaces;
@@ -20,7 +21,9 @@ var resolver = new SimpleResolverImpl(listener, hashProvider);
 
 Console.WriteLine($"Playing game with {cells.Length} cells, {helpers.Count()} helpers and {constraints.Count()} constraints...");
 
+var stopWatch = Stopwatch.StartNew();
 var result = resolver.Resolve(cells, matrixSettings, constraints, helpers);
+stopWatch.Stop();
 
 if (result.Success && !EnsureMatrixResolved(result.Cells, matrixSettings))
 {
@@ -28,7 +31,7 @@ if (result.Success && !EnsureMatrixResolved(result.Cells, matrixSettings))
 }
 
 var exporter = CreateExporter(args.FirstArgOrDefault("-O"), verbose);
-exporter.Export(matrixSettings, result);
+exporter.Export(matrixSettings, result, stopWatch.Elapsed);
 
 /********************************/
 

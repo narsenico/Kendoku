@@ -4,5 +4,7 @@ namespace Kendoku.Interfaces;
 
 public interface IExporter
 {
-    void Export(MatrixSettings matrixSettings, Result result);
+    void Export(MatrixSettings matrixSettings,
+                Result result,
+                TimeSpan executionTime);
 }

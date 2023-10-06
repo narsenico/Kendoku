@@ -14,7 +14,9 @@ internal class HtmlExporter : IExporter
         _fileName = fileName;
     }
 
-    public void Export(MatrixSettings matrixSettings, Result result)
+    public void Export(MatrixSettings matrixSettings,
+                       Result result,
+                       TimeSpan executionTime)
     {
         var buff = new StringBuilder();
         buff.AppendLine("<html>");
