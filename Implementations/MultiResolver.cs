@@ -33,8 +33,6 @@ public class MultiResolver : IResolver
             {
                 break;
             }
-
-            cells = result.Cells;
         }
 
         return last! with { IterationCount = totalIterations };

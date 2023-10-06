@@ -21,6 +21,7 @@ var hashProvider = new HashProvider();
 var listener = CreateEventListener(verbose);
 var resolvers = new IResolver[] {
     new SimpleResolver(listener, hashProvider),
+    new BrutalResolver(listener, new SudokuResolver(listener, hashProvider))
 };
 var resolver = new MultiResolver(listener, resolvers);
 
